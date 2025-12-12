@@ -550,7 +550,21 @@
         const WHATSAPP_NUMBER = "9376884568";
         const WHATSAPP_LINK = `https://wa.me/91${WHATSAPP_NUMBER}`;
         const MASTER_ACCESS_CODE = "AYU-VEDA-2024";
-        const GEMINI_API_KEY = "AIzaSyByVs0Nw_aUOjJtYDhIj76sVnOY_ucyCyY"; // ⬅️ REPLACE THIS WITH YOUR KEY
+        const GEMINI_API_KEY = "AIzaSyByVs0Nw_aUOjJtYDhIj76sVnOY_ucyCyY"; // ⬅️ REPLACE WITH YOUR REAL KEY
+
+        // Debug function to check API key
+        function checkApiKey() {
+            console.log("=== API KEY DEBUG ===");
+            console.log("API Key exists:", !!GEMINI_API_KEY);
+            console.log("API Key length:", GEMINI_API_KEY ? GEMINI_API_KEY.length : 0);
+            console.log("API Key starts with AIza?:", GEMINI_API_KEY ? GEMINI_API_KEY.startsWith('AIza') : false);
+            console.log("API Key first 10 chars:", GEMINI_API_KEY ? GEMINI_API_KEY.substring(0, 10) + '...' : 'N/A');
+            console.log("API Key is placeholder?:", GEMINI_API_KEY === 'YOUR_GEMINI_API_KEY_HERE');
+            console.log("=== END DEBUG ===");
+        }
+
+        // Run debug check
+        checkApiKey();
 
         // ====================== CURRICULUM DATA ======================
         const generateChapters = (subjectName, count) => {
@@ -726,84 +740,112 @@
             }
         ];
 
-        // ====================== AI SERVICE ======================
+        // ====================== AI SERVICE (FIXED VERSION) ======================
         class RealGeminiService {
             constructor(apiKey) {
                 this.apiKey = apiKey;
+                console.log('AI Service initialized with API key:', apiKey ? 'Yes' : 'No');
             }
 
             async generateAyurvedaResponse(userPrompt) {
-                // If no API key or using placeholder, use mock responses
-                if (!this.apiKey || this.apiKey === 'YOUR_GEMINI_API_KEY_HERE') {
-                    return this.getMockResponse(userPrompt);
-                }
+                console.log('Generating response for:', userPrompt.substring(0, 50) + '...');
+                
+                // Check if we have a REAL API key (not a placeholder)
+                const isPlaceholderKey = this.apiKey === 'YOUR_GEMINI_API_KEY_HERE' || 
+                                        this.apiKey === '' || 
+                                        !this.apiKey || 
+                                        this.apiKey.includes('YOUR_');
+                
+                const hasValidApiKey = this.apiKey && 
+                                      !isPlaceholderKey && 
+                                      this.apiKey.startsWith('AIza') && 
+                                      this.apiKey.length > 30;
 
-                try {
-                    const response = await fetch(
-                        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${this.apiKey}`,
-                        {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify({
-                                contents: [{
-                                    parts: [{
-                                        text: userPrompt
-                                    }]
-                                }],
-                                system_instruction: {
-                                    parts: [{
-                                        text: `You are 'AyurBot', a wise and knowledgeable Ayurvedic expert and clinical professor for BAMS students.
-                                        Your name is Ayurveez Assistant.
-                                        You have deep knowledge of Charaka Samhita, Sushruta Samhita, Ashtanga Hridaya, and modern clinical correlation.
-                                        
-                                        Guidelines:
-                                        1. Answer student queries regarding subjects, textbooks, slokas, and clinical treatments.
-                                        2. Use a polite, scholarly, yet accessible tone.
-                                        3. If asked about treatments, provide the Ayurvedic perspective but always include a disclaimer that this is for educational purposes.
-                                        4. Keep answers concise but informative (2-3 paragraphs maximum).
-                                        5. If the query is unrelated to Ayurveda or medicine, politely steer the conversation back to Ayurveda.
-                                        6. Always respond in English unless specifically asked for Sanskrit terms.
-                                        7. Include relevant Sanskrit terminology when appropriate.`
-                                    }]
+                console.log('Has valid API key?:', hasValidApiKey);
+                console.log('Is placeholder key?:', isPlaceholderKey);
+
+                if (hasValidApiKey) {
+                    console.log('🔵 ATTEMPTING REAL GEMINI API CALL');
+                    try {
+                        const response = await fetch(
+                            `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${this.apiKey}`,
+                            {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
                                 },
-                                generationConfig: {
-                                    temperature: 0.7,
-                                    maxOutputTokens: 1000,
-                                    topP: 0.8,
-                                    topK: 40
-                                }
-                            })
+                                body: JSON.stringify({
+                                    contents: [{
+                                        parts: [{
+                                            text: userPrompt
+                                        }]
+                                    }],
+                                    system_instruction: {
+                                        parts: [{
+                                            text: `You are 'AyurBot', a wise and knowledgeable Ayurvedic expert and clinical professor for BAMS students.
+                                            Your name is Ayurveez Assistant.
+                                            You have deep knowledge of Charaka Samhita, Sushruta Samhita, Ashtanga Hridaya, and modern clinical correlation.
+                                            
+                                            Guidelines:
+                                            1. Answer student queries regarding subjects, textbooks, slokas, and clinical treatments.
+                                            2. Use a polite, scholarly, yet accessible tone.
+                                            3. If asked about treatments, provide the Ayurvedic perspective but always include a disclaimer that this is for educational purposes.
+                                            4. Keep answers concise but informative (2-3 paragraphs maximum).
+                                            5. If the query is unrelated to Ayurveda or medicine, politely steer the conversation back to Ayurveda.
+                                            6. Always respond in English unless specifically asked for Sanskrit terms.
+                                            7. Include relevant Sanskrit terminology when appropriate.`
+                                        }]
+                                    },
+                                    generationConfig: {
+                                        temperature: 0.7,
+                                        maxOutputTokens: 1000,
+                                        topP: 0.8,
+                                        topK: 40
+                                    }
+                                })
+                            }
+                        );
+                        
+                        console.log('API Response status:', response.status);
+                        
+                        if (!response.ok) {
+                            const errorText = await response.text();
+                            console.error('❌ API Error:', response.status, errorText);
+                            console.log('🟡 Falling back to mock response');
+                            return this.getMockResponse(userPrompt);
                         }
-                    );
-                    
-                    if (!response.ok) {
-                        const errorText = await response.text();
-                        console.error('API Error:', response.status, errorText);
+                        
+                        const data = await response.json();
+                        console.log('API Response data:', data);
+                        
+                        if (data.candidates && 
+                            data.candidates[0] && 
+                            data.candidates[0].content && 
+                            data.candidates[0].content.parts && 
+                            data.candidates[0].content.parts[0]) {
+                            console.log('✅ REAL API RESPONSE SUCCESS');
+                            return data.candidates[0].content.parts[0].text;
+                        } else {
+                            console.warn('⚠️ Unexpected API response structure:', data);
+                            console.log('🟡 Falling back to mock response');
+                            return this.getMockResponse(userPrompt);
+                        }
+                        
+                    } catch (error) {
+                        console.error('❌ Gemini API Network Error:', error);
+                        console.log('🟡 Falling back to mock response');
                         return this.getMockResponse(userPrompt);
                     }
-                    
-                    const data = await response.json();
-                    
-                    if (data.candidates && 
-                        data.candidates[0] && 
-                        data.candidates[0].content && 
-                        data.candidates[0].content.parts && 
-                        data.candidates[0].content.parts[0]) {
-                        return data.candidates[0].content.parts[0].text;
-                    } else {
-                        console.warn('Unexpected API response structure:', data);
-                        return this.getMockResponse(userPrompt);
-                    }
-                    
-                } catch (error) {
-                    console.error('Gemini API Network Error:', error);
+                } else {
+                    console.log('🟡 USING MOCK RESPONSE (No valid API key)');
+                    console.log('API Key provided:', this.apiKey ? `"${this.apiKey.substring(0, 20)}..."` : 'None');
+                    console.log('To use real AI, replace YOUR_GEMINI_API_KEY_HERE with your actual Gemini API key');
                     return this.getMockResponse(userPrompt);
                 }
             }
 
             getMockResponse(userPrompt) {
+                console.log('🔶 Generating mock response for:', userPrompt);
                 const lowerPrompt = userPrompt.toLowerCase();
                 
                 if (lowerPrompt.includes('dosha') || lowerPrompt.includes('vata') || lowerPrompt.includes('pitta') || lowerPrompt.includes('kapha')) {
@@ -1032,7 +1074,9 @@
                 this.scrollToBottom();
 
                 try {
+                    console.log('📤 Sending message to AI:', inputValue);
                     const responseText = await this.aiService.generateAyurvedaResponse(inputValue);
+                    console.log('📥 Received AI response:', responseText.substring(0, 100) + '...');
                     
                     const botMsg = {
                         id: (Date.now() + 1).toString(),
@@ -1042,7 +1086,7 @@
                     
                     this.state.messages.push(botMsg);
                 } catch (error) {
-                    console.error('Chat error:', error);
+                    console.error('❌ Chat error:', error);
                     const errorMsg = {
                         id: (Date.now() + 1).toString(),
                         role: 'model',
@@ -1139,6 +1183,9 @@
                             <p class="text-xs text-gray-500 mt-2 text-center">
                                 Educational purposes only • Not medical advice
                             </p>
+                            <p class="text-xs text-gray-400 mt-1 text-center">
+                                ${GEMINI_API_KEY === 'YOUR_GEMINI_API_KEY_HERE' ? '🔶 Using mock responses - Add real API key for AI' : '✅ Real AI enabled'}
+                            </p>
                         </div>
                     </div>
                 `;
@@ -1166,6 +1213,8 @@
 
             init() {
                 window.chatBotInstance = new ChatBot();
+                console.log('Ayurveez App initialized');
+                console.log('AI Status:', GEMINI_API_KEY === 'YOUR_GEMINI_API_KEY_HERE' ? 'MOCK MODE' : 'REAL AI MODE');
             }
 
             handleProffClick(proff) {
