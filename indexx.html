@@ -1,0 +1,1599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AYURVEEZ: BAMS Classes Made Easy</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --ayur-saffron: #FF9933;
+            --ayur-green: #138808;
+            --ayur-cream: #F5F5DC;
+            --ayur-brown: #8B4513;
+            --ayur-gold: #D4AF37;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Noto Sans Devanagari', sans-serif;
+        }
+        
+        body {
+            background-color: var(--ayur-cream);
+            color: #333;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        /* Header - Updated to match your image */
+        .header {
+            background: white;
+            color: var(--ayur-brown);
+            padding: 0.8rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .logo-text h1 {
+            font-size: 1.8rem;
+            color: var(--ayur-green);
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+        
+        .tagline {
+            font-size: 0.85rem;
+            color: var(--ayur-saffron);
+            display: block;
+            font-weight: 500;
+        }
+        
+        /* Navigation - Updated professional styling */
+        nav {
+            display: flex;
+            align-items: center;
+        }
+        
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 25px;
+            align-items: center;
+        }
+        
+        nav a {
+            color: var(--ayur-brown);
+            text-decoration: none;
+            font-weight: 500;
+            padding: 8px 0;
+            position: relative;
+            transition: all 0.3s;
+            font-size: 0.95rem;
+        }
+        
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--ayur-saffron);
+            transition: width 0.3s;
+        }
+        
+        nav a:hover {
+            color: var(--ayur-saffron);
+        }
+        
+        nav a:hover::after {
+            width: 100%;
+        }
+        
+        .cta-button {
+            background: linear-gradient(135deg, var(--ayur-saffron), #ff8c00);
+            color: white !important;
+            font-weight: 600;
+            padding: 10px 25px !important;
+            border-radius: 5px;
+            border: none;
+            margin-left: 10px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(255, 153, 51, 0.2);
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(255, 153, 51, 0.3);
+        }
+        
+        .cta-button::after {
+            display: none;
+        }
+        
+        /* Updated hamburger menu - right side */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 4px;
+            background: none;
+            border: none;
+            padding: 5px;
+            margin-left: 15px;
+        }
+        
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background-color: var(--ayur-brown);
+            border-radius: 2px;
+            transition: 0.3s;
+        }
+        
+        /* Hero Section */
+        .hero {
+            padding: 60px 5% 80px;
+            text-align: center;
+            background: linear-gradient(rgba(245, 245, 220, 0.9), rgba(245, 245, 220, 0.9)), 
+                        url('https://images.unsplash.com/photo-1542736667-069246bdbc6d?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            min-height: calc(100vh - 80px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .hero h2 {
+            font-size: 3rem;
+            color: var(--ayur-brown);
+            margin-bottom: 15px;
+        }
+        
+        .hero h2 span {
+            color: var(--ayur-green);
+        }
+        
+        .slogan {
+            font-size: 1.5rem;
+            color: var(--ayur-saffron);
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        
+        /* Adjusted spacing for Why Choose AYURVEEZ section */
+        .features-section {
+            padding: 40px 5% 60px;
+        }
+        
+        /* Features Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin: 40px 0 0;
+        }
+        
+        .feature-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            text-align: center;
+            border-top: 5px solid var(--ayur-green);
+            transition: transform 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--ayur-saffron);
+            margin-bottom: 20px;
+        }
+        
+        /* Courses Preview */
+        .courses-section {
+            padding: 60px 5%;
+            background: white;
+        }
+        
+        .section-title {
+            text-align: center;
+            color: var(--ayur-brown);
+            font-size: 2.2rem;
+            margin-bottom: 50px;
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            width: 100px;
+            height: 4px;
+            background: var(--ayur-saffron);
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .proff-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        
+        .proff-card {
+            background: var(--ayur-cream);
+            border-radius: 15px;
+            overflow: hidden;
+            border: 2px solid var(--ayur-green);
+            transition: all 0.3s;
+        }
+        
+        .proff-card:hover {
+            border-color: var(--ayur-saffron);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        
+        .proff-header {
+            background: var(--ayur-green);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .proff-subjects {
+            padding: 25px;
+        }
+        
+        .proff-subjects ul {
+            list-style: none;
+            margin-bottom: 20px;
+        }
+        
+        .proff-subjects li {
+            padding: 8px 0;
+            border-bottom: 1px dashed #ddd;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .proff-subjects li i {
+            color: var(--ayur-saffron);
+        }
+        
+        .price {
+            font-size: 1.8rem;
+            color: var(--ayur-brown);
+            font-weight: bold;
+            text-align: center;
+            margin: 15px 0;
+        }
+        
+        .payment-options {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 10px 25px;
+            border: none;
+            border-radius: 5px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .btn-primary {
+            background: var(--ayur-saffron);
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: var(--ayur-green);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #e68900;
+        }
+        
+        /* AI GuruJi Section */
+        .guruji-section {
+            padding: 80px 5%;
+            background: linear-gradient(135deg, #e8f5e9 0%, #fff3e0 100%);
+            text-align: center;
+        }
+        
+        .guruji-card {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border: 3px solid var(--ayur-gold);
+        }
+        
+        .guruji-avatar {
+            width: 120px;
+            height: 120px;
+            background: linear-gradient(135deg, var(--ayur-saffron), var(--ayur-gold));
+            border-radius: 50%;
+            margin: 0 auto 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            color: white;
+        }
+        
+        /* UPDATED FOOTER LAYOUT */
+        .footer {
+            background: var(--ayur-brown);
+            color: white;
+            padding: 50px 5% 30px;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 60px;
+            margin-bottom: 50px;
+        }
+        
+        .footer-brand {
+            flex: 0 0 300px;
+        }
+        
+        .footer-logo {
+            font-size: 2rem;
+            color: var(--ayur-gold);
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+        
+        .footer-tagline {
+            color: rgba(255,255,255,0.9);
+            font-size: 0.95rem;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .social-icons a {
+            color: white;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .social-icons a:hover {
+            background: var(--ayur-saffron);
+            transform: translateY(-3px);
+        }
+        
+        .footer-sections {
+            display: flex;
+            flex: 1;
+            justify-content: space-between;
+            gap: 60px;
+        }
+        
+        .quick-links, .contact-info {
+            flex: 1;
+            min-width: 200px;
+        }
+        
+        .footer h4 {
+            color: var(--ayur-gold);
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .footer h4::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 40px;
+            height: 2px;
+            background: var(--ayur-saffron);
+        }
+        
+        .quick-links-list {
+            list-style: none;
+        }
+        
+        .quick-links-list li {
+            margin-bottom: 12px;
+        }
+        
+        .quick-links-list a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            transition: all 0.3s;
+            display: block;
+            padding: 5px 0;
+            font-size: 0.95rem;
+        }
+        
+        .quick-links-list a:hover {
+            color: var(--ayur-saffron);
+            padding-left: 8px;
+        }
+        
+        /* UPDATED CONTACT DETAILS - FIXED SPACING */
+        .contact-details {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .contact-details li {
+            margin-bottom: 15px;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        
+        .contact-details i {
+            color: var(--ayur-saffron);
+            width: 20px;
+            margin-top: 2px;
+            flex-shrink: 0;
+        }
+        
+        .contact-item {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.1;
+        }
+        
+        .contact-item strong {
+            font-weight: bold;
+            font-size: 0.9rem;
+            margin-bottom: 1px;
+            display: block;
+        }
+        
+        .contact-item span {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            display: block;
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 40px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        /* Updated Professional Chatbot - FIXED */
+        .chatbot-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        
+        .chatbot-toggle {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--ayur-green), var(--ayur-saffron));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            border: none;
+        }
+        
+        .chatbot-toggle:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+        
+        .chatbot-window {
+            position: absolute;
+            bottom: 70px;
+            right: 0;
+            width: 380px;
+            height: 520px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 5px 25px rgba(0,0,0,0.15);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            border: 1px solid #e0e0e0;
+        }
+        
+        .chatbot-header {
+            background: linear-gradient(135deg, var(--ayur-green), var(--ayur-saffron));
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            flex-shrink: 0;
+        }
+        
+        .chatbot-close {
+            position: absolute;
+            right: 15px;
+            top: 15px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        
+        .chatbot-close:hover {
+            background: rgba(255,255,255,0.2);
+        }
+        
+        .chatbot-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background: #f9f9f9;
+            min-height: 200px;
+        }
+        
+        .message {
+            margin-bottom: 15px;
+            max-width: 85%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            word-wrap: break-word;
+            line-height: 1.4;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .bot-message {
+            background: white;
+            border: 1px solid #e0e0e0;
+            align-self: flex-start;
+            margin-right: auto;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .user-message {
+            background: linear-gradient(135deg, var(--ayur-saffron), #ffb347);
+            color: white;
+            align-self: flex-end;
+            margin-left: auto;
+            box-shadow: 0 2px 8px rgba(255, 153, 51, 0.2);
+        }
+        
+        .quick-questions {
+            padding: 15px;
+            background: white;
+            border-top: 1px solid #eee;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+            max-height: 150px;
+            overflow-y: auto;
+            flex-shrink: 0;
+        }
+        
+        .quick-question-btn {
+            padding: 8px 10px;
+            background: #f5f5f5;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.8rem;
+            color: var(--ayur-brown);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            min-height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .quick-question-btn:hover {
+            background: var(--ayur-saffron);
+            color: white;
+            border-color: var(--ayur-saffron);
+            transform: translateY(-2px);
+        }
+        
+        .chatbot-input {
+            display: flex;
+            padding: 12px;
+            background: white;
+            border-top: 1px solid #eee;
+            flex-shrink: 0;
+        }
+        
+        .chatbot-input input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            outline: none;
+            font-size: 0.9rem;
+        }
+        
+        .chatbot-input button {
+            background: var(--ayur-green);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 0 20px;
+            margin-left: 10px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+            min-width: 60px;
+        }
+        
+        .chatbot-input button:hover {
+            background: #0d7a08;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .hero h2 {
+                font-size: 2.5rem;
+            }
+            
+            .proff-cards {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            }
+            
+            .footer-content {
+                gap: 40px;
+            }
+            
+            .footer-sections {
+                gap: 30px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header {
+                padding: 0.8rem 5%;
+            }
+            
+            /* Professional hamburger on right side */
+            .hamburger {
+                display: flex;
+                order: 2;
+                margin-left: auto;
+            }
+            
+            .nav-menu {
+                position: fixed;
+                top: 70px;
+                right: -100%;
+                flex-direction: column;
+                background: white;
+                width: 280px;
+                height: calc(100vh - 70px);
+                padding: 30px 25px;
+                transition: 0.3s;
+                gap: 0;
+                z-index: 999;
+                overflow-y: auto;
+                box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+            }
+            
+            .nav-menu.active {
+                right: 0;
+                left: auto;
+            }
+            
+            .nav-menu li {
+                width: 100%;
+                margin-bottom: 15px;
+            }
+            
+            nav a {
+                padding: 12px 15px;
+                text-align: left;
+                border: 1px solid rgba(0,0,0,0.05);
+                display: block;
+                border-radius: 5px;
+            }
+            
+            .cta-button {
+                margin-left: 0;
+                margin-top: 10px;
+                width: 100%;
+                text-align: center;
+            }
+            
+            /* Hero section adjustments for mobile */
+            .hero {
+                padding: 40px 5% 60px;
+                min-height: auto;
+            }
+            
+            .hero h2 {
+                font-size: 2rem;
+            }
+            
+            .slogan {
+                font-size: 1.3rem;
+            }
+            
+            /* Center the Explore Course button on mobile */
+            .hero .btn {
+                display: block;
+                margin: 20px auto;
+                text-align: center;
+                width: auto;
+                max-width: 250px;
+            }
+            
+            /* Reduced spacing between Welcome and Why Choose sections */
+            .features-section {
+                padding: 20px 5% 40px;
+            }
+            
+            .section-title {
+                font-size: 1.8rem;
+            }
+            
+            .guruji-card {
+                padding: 30px 20px;
+            }
+            
+            .features-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+                margin-top: 20px;
+            }
+            
+            /* UPDATED MOBILE FOOTER - Quick Links and Contact Us side by side */
+            .footer-content {
+                flex-direction: column;
+                gap: 40px;
+            }
+            
+            .footer-brand {
+                flex: 0 0 auto;
+                text-align: center;
+                width: 100%;
+            }
+            
+            .footer h4::after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+            
+            .footer-sections {
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                gap: 30px;
+                width: 100%;
+            }
+            
+            .quick-links, .contact-info {
+                flex: 1;
+                min-width: 0;
+                text-align: center;
+            }
+            
+            .social-icons {
+                justify-content: center;
+            }
+            
+            .contact-details li {
+                justify-content: center;
+                text-align: center;
+            }
+            
+            .quick-links-list a {
+                text-align: center;
+            }
+            
+            /* Chatbot adjustments for mobile */
+            .chatbot-window {
+                width: 90vw;
+                right: 5vw;
+                height: 70vh;
+                bottom: 80px;
+            }
+            
+            .chatbot-toggle {
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+            }
+            
+            .quick-questions {
+                grid-template-columns: 1fr;
+                max-height: 200px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .logo-text h1 {
+                font-size: 1.5rem;
+            }
+            
+            .tagline {
+                font-size: 0.8rem;
+            }
+            
+            .hero h2 {
+                font-size: 1.8rem;
+            }
+            
+            .slogan {
+                font-size: 1.1rem;
+            }
+            
+            .feature-card {
+                padding: 20px;
+            }
+            
+            .proff-card {
+                margin: 0 auto;
+                max-width: 320px;
+            }
+            
+            .payment-options {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 200px;
+                text-align: center;
+            }
+            
+            .price {
+                font-size: 1.5rem;
+            }
+            
+            .quick-questions {
+                grid-template-columns: 1fr;
+            }
+            
+            /* Mobile footer adjustments for very small screens */
+            .footer-sections {
+                flex-direction: column;
+                gap: 40px;
+            }
+            
+            .quick-links, .contact-info {
+                width: 100%;
+            }
+        }
+        
+        /* Logo Placeholder */
+        .logo-placeholder {
+            width: 50px;
+            height: 50px;
+            background: var(--ayur-gold);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">
+            <!-- Replace this div with your logo image -->
+            <div class="logo-placeholder">
+                A
+            </div>
+            <!--
+            <img src="your-logo.png" alt="AYURVEEZ Logo" class="logo-img">
+            -->
+            <div class="logo-text">
+                <h1>AYURVEEZ</h1>
+                <span class="tagline">Where Ayurveda Meets Modern Learning</span>
+            </div>
+        </div>
+        
+        <nav>
+            <ul class="nav-menu" id="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="courses.html">Courses</a></li>
+                <li><a href="resources.html">Free Resources</a></li>
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="guruji.html">GuruJi AI</a></li>
+                <li><a href="contact.html" class="cta-button">Enroll Now</a></li>
+            </ul>
+            
+            <!-- Updated hamburger menu - right side -->
+            <button class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <h2>Welcome to <span>AYURVEEZ</span></h2>
+        <div class="slogan">BAMS Classes Made Easy</div>
+        <p style="max-width: 800px; margin: 0 auto 30px; font-size: 1.1rem;">
+            Master Ayurvedic Medicine with India's first AI-powered learning platform. 
+            Created by Dr. Ravi Shankar Sharma for BAMS students worldwide.
+        </p>
+        <a href="courses.html" class="btn btn-primary" style="font-size: 1.1rem; padding: 15px 35px;">
+            <i class="fas fa-graduation-cap"></i> Explore Courses
+        </a>
+    </section>
+
+    <!-- Features -->
+    <section class="features-section">
+        <div class="section-title">Why Choose AYURVEEZ?</div>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-video"></i>
+                </div>
+                <h3>Chapter-wise Videos</h3>
+                <p>High-quality video lectures for each chapter, accessible anytime</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-file-pdf"></i>
+                </div>
+                <h3>Digital Notes</h3>
+                <p>Comprehensive notes with diagrams, available as PDF downloads</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-question-circle"></i>
+                </div>
+                <h3>Chapter Tests</h3>
+                <p>Self-assessment tests after each chapter to track progress</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-robot"></i>
+                </div>
+                <h3>24/7 AI Support</h3>
+                <p>GuruJi AI assistant for instant doubt solving and study plans</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-rupee-sign"></i>
+                </div>
+                <h3>Flexible Payment</h3>
+                <p>Pay per subject or complete proff - choose what suits you</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-headset"></i>
+                </div>
+                <h3>Personal Mentorship</h3>
+                <p>Direct doubt solving calls with Dr. Ravi for enrolled students</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Courses Preview -->
+    <section class="courses-section">
+        <div class="section-title">BAMS Courses Structure</div>
+        <div class="proff-cards">
+            <!-- First Proff -->
+            <div class="proff-card">
+                <div class="proff-header">
+                    <h3>FIRST PROFESSIONAL</h3>
+                    <p>1st Year BAMS</p>
+                </div>
+                <div class="proff-subjects">
+                    <ul>
+                        <li><i class="fas fa-book-medical"></i> Padarth Vigyan</li>
+                        <li><i class="fas fa-bone"></i> Rachana Sharir</li>
+                        <li><i class="fas fa-brain"></i> Kriya Sharir</li>
+                        <li><i class="fas fa-book"></i> Maulik Siddhant</li>
+                        <li><i class="fas fa-language"></i> Sanskrit</li>
+                    </ul>
+                    <div class="price">₹1,999</div>
+                    <div class="payment-options">
+                        <a href="first-proff.html" class="btn btn-primary">View Details</a>
+                        <a href="contact.html" class="btn btn-secondary">Buy Complete</a>
+                    </div>
+                    <p style="text-align: center; margin-top: 15px; font-size: 0.9rem;">
+                        Or buy subjects separately from ₹499
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Second Proff -->
+            <div class="proff-card">
+                <div class="proff-header">
+                    <h3>SECOND PROFESSIONAL</h3>
+                    <p>2nd Year BAMS</p>
+                </div>
+                <div class="proff-subjects">
+                    <ul>
+                        <li><i class="fas fa-prescription-bottle"></i> Dravyaguna</li>
+                        <li><i class="fas fa-mortar-pestle"></i> Rasa Shastra</li>
+                        <li><i class="fas fa-stethoscope"></i> Rog Nidan</li>
+                        <li><i class="fas fa-book-medical"></i> Charak Samhita</li>
+                        <li><i class="fas fa-user-md"></i> Swasthavritta</li>
+                        <li><i class="fas fa-book"></i> Sanskrit</li>
+                    </ul>
+                    <div class="price">₹2,499</div>
+                    <div class="payment-options">
+                        <a href="second-proff.html" class="btn btn-primary">View Details</a>
+                        <a href="contact.html" class="btn btn-secondary">Buy Complete</a>
+                    </div>
+                    <p style="text-align: center; margin-top: 15px; font-size: 0.9rem;">
+                        Or buy subjects separately from ₹499
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Final Proff -->
+            <div class="proff-card">
+                <div class="proff-header">
+                    <h3>FINAL PROFESSIONAL</h3>
+                    <p>3rd-4th Year BAMS</p>
+                </div>
+                <div class="proff-subjects">
+                    <ul>
+                        <li><i class="fas fa-spa"></i> Panchakarma</li>
+                        <li><i class="fas fa-baby"></i> Prasuti Tantra</li>
+                        <li><i class="fas fa-child"></i> Kaumarbhritya</li>
+                        <li><i class="fas fa-skull-crossbones"></i> Agad Tantra</li>
+                        <li><i class="fas fa-eye"></i> Shalakya Tantra</li>
+                        <li><i class="fas fa-user-injured"></i> Kayachikitsa</li>
+                        <li><i class="fas fa-procedures"></i> Shalya Tantra</li>
+                        <li><i class="fas fa-book"></i> Research Methodology</li>
+                        <li><i class="fas fa-comment-medical"></i> Modern Medicine</li>
+                    </ul>
+                    <div class="price">₹3,999</div>
+                    <div class="payment-options">
+                        <a href="final-proff.html" class="btn btn-primary">View Details</a>
+                        <a href="contact.html" class="btn btn-secondary">Buy Complete</a>
+                    </div>
+                    <p style="text-align: center; margin-top: 15px; font-size: 0.9rem;">
+                        Or buy subjects separately from ₹499
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- AI GuruJi Section -->
+    <section class="guruji-section">
+        <div class="section-title">Meet Your AI Study Companion</div>
+        <div class="guruji-card">
+            <div class="guruji-avatar">
+                <i class="fas fa-robot"></i>
+            </div>
+            <h2 style="color: var(--ayur-brown); margin-bottom: 15px;">GuruJi AI</h2>
+            <p style="font-size: 1.1rem; margin-bottom: 25px;">
+                Your 24/7 Ayurveda study assistant that provides:
+            </p>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; text-align: left; margin-bottom: 30px;">
+                <div><i class="fas fa-calendar-check" style="color: var(--ayur-saffron);"></i> Personalized Study Plans</div>
+                <div><i class="fas fa-lightbulb" style="color: var(--ayur-saffron);"></i> Exam Preparation Tips</div>
+                <div><i class="fas fa-heartbeat" style="color: var(--ayur-saffron);"></i> Stress Management</div>
+                <div><i class="fas fa-question" style="color: var(--ayur-saffron);"></i> Instant Doubt Solving</div>
+            </div>
+            <a href="guruji.html" class="btn btn-primary" style="font-size: 1.1rem;">
+                <i class="fas fa-comments"></i> Chat with GuruJi AI
+            </a>
+        </div>
+    </section>
+
+    <!-- Payment Process -->
+    <section style="padding: 60px 5%; background: white;">
+        <div class="section-title">How to Enroll</div>
+        <div style="max-width: 800px; margin: 0 auto; background: var(--ayur-cream); padding: 40px; border-radius: 15px; border: 2px solid var(--ayur-green);">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px; text-align: center;">
+                <div>
+                    <div style="width: 60px; height: 60px; background: var(--ayur-saffron); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin: 0 auto 15px;">1</div>
+                    <h4>Choose Course</h4>
+                    <p>Select Proff or Subject</p>
+                </div>
+                <div>
+                    <div style="width: 60px; height: 60px; background: var(--ayur-saffron); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin: 0 auto 15px;">2</div>
+                    <h4>Make Payment</h4>
+                    <p>Via UPI(thersk@axl)/Bank Transfer(SBI Account No.41139275178, IFSC CODE:SBIN0061746)</p>
+                </div>
+                <div>
+                    <div style="width: 60px; height: 60px; background: var(--ayur-saffron); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin: 0 auto 15px;">3</div>
+                    <h4>Send Screenshot</h4>
+                    <p>WhatsApp: 9376884568</p>
+                </div>
+                <div>
+                    <div style="width: 60px; height: 60px; background: var(--ayur-saffron); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin: 0 auto 15px;">4</div>
+                    <h4>Get Access</h4>
+                    <p>Unique code for dashboard</p>
+                </div>
+            </div>
+            
+            <div style="margin-top: 40px; text-align: center;">
+                <h4>WhatsApp Payment Message Format:</h4>
+                <div style="background: white; padding: 15px; border-radius: 10px; margin-top: 15px; font-family: monospace; text-align: left; max-width: 500px; margin: 15px auto;">
+                    Name: [Your Full Name]<br>
+                    Course: [Proff/Subject Name]<br>
+                    Amount: ₹[Amount Paid]<br>
+                    Transaction ID: [Last 4 digits]<br>
+                    Email: [For confirmation]
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- UPDATED FOOTER -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-brand">
+                <div class="footer-logo">AYURVEEZ</div>
+                <p class="footer-tagline">Where Ayurveda Meets Modern Learning</p>
+                <p style="font-size: 0.9rem; opacity: 0.9; line-height: 1.5; margin-bottom: 10px;">
+                    Created by Dr. Ravi Shankar Sharma<br>
+                    BAMS 2nd Prof, Uttarakhand Ayurveda University
+                </p>
+                <div class="social-icons">
+                    <a href="https://wa.me/9376884568" target="_blank" title="WhatsApp">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                    <a href="https://t.me/ayurveez" target="_blank" title="Telegram">
+                        <i class="fab fa-telegram"></i>
+                    </a>
+                    <a href="https://www.instagram.com/ayurveez_bams" target="_blank" title="Instagram">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                    <a href="https://www.youtube.com/@ayurveez" target="_blank" title="YouTube">
+                        <i class="fab fa-youtube"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="footer-sections">
+                <div class="quick-links">
+                    <h4>Quick Links</h4>
+                    <ul class="quick-links-list">
+                        <li><a href="courses.html">Courses</a></li>
+                        <li><a href="resources.html">Free Resources</a></li>
+                        <li><a href="blog.html">Blog</a></li>
+                        <li><a href="guruji.html">GuruJi AI</a></li>
+                    </ul>
+                </div>
+                
+                <div class="contact-info">
+                    <h4>Contact Us</h4>
+                    <ul class="contact-details">
+                        <li>
+                            <i class="fas fa-phone"></i>
+                            <div class="contact-item">
+                                <strong>WhatsApp</strong>
+                                <span>9376884568</span>
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fas fa-envelope"></i>
+                            <div class="contact-item">
+                                <strong>Email</strong>
+                                <span>ayurveez@gmail.com</span>
+                            </div>
+                        </li>
+                        <li>
+                            <i class="fas fa-map-marker-alt"></i>
+                            <div class="contact-item">
+                                <strong>Address</strong>
+                                <span>Dehradun, Uttarakhand</span>
+                            </div>
+                        </li>
+                    </ul>
+                    <div style="text-align: center; margin-top: 15px;">
+                        <a href="https://whatsform.com/6Ih-pp" class="btn btn-primary" style="display: inline-block; font-size: 0.9rem; padding: 8px 25px;">
+                            <i class="fas fa-headset"></i> Get Support
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            © 2024 AYURVEEZ. All rights reserved. | BAMS Classes Made Easy
+        </div>
+    </footer>
+
+    <!-- Floating Chatbot -->
+    <div class="chatbot-container">
+        <button class="chatbot-toggle" id="chatbotToggle">
+            <i class="fas fa-comments"></i>
+        </button>
+        <div class="chatbot-window" id="chatbotWindow">
+            <div class="chatbot-header">
+                <h3 style="margin: 0; font-size: 1.1rem;">GuruJi AI Assistant</h3>
+                <p style="margin: 5px 0 0; font-size: 0.8rem; opacity: 0.9;">Powered by Gemini AI • Ayurveez</p>
+                <button class="chatbot-close" id="chatbotClose">&times;</button>
+            </div>
+            <div class="chatbot-messages" id="chatbotMessages">
+                <div class="message bot-message">
+                    Namaste! 🙏 I'm GuruJi AI, your Ayurvedic study assistant. I can help you with BAMS curriculum, Ayurvedic principles, herbs, treatments, and Samhita studies. How can I assist you today?
+                </div>
+            </div>
+            <div class="quick-questions" id="quickQuestions">
+                <button class="quick-question-btn" data-question="dosha">Explain Tridosha theory</button>
+                <button class="quick-question-btn" data-question="charaka">What is Charaka Samhita?</button>
+                <button class="quick-question-btn" data-question="herb">Herbs for digestion</button>
+                <button class="quick-question-btn" data-question="panchakarma">Explain Panchakarma</button>
+                <button class="quick-question-btn" data-question="study">BAMS study tips</button>
+                <button class="quick-question-btn" data-question="triphala">Benefits of Triphala</button>
+            </div>
+            <div class="chatbot-input">
+                <input type="text" id="chatbotInput" placeholder="Ask about Ayurveda or BAMS...">
+                <button id="chatbotSend">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ====================== GEMINI AI INTEGRATION ======================
+        const GEMINI_API_KEY = "AIzaSyA2XMwuTyOZBu_1xfn5PChuzsgar-a-8OY"; // ⬅️ REPLACE WITH YOUR REAL KEY
+        
+        // AI Service for Gemini API
+        class GeminiAIService {
+            constructor(apiKey) {
+                this.apiKey = apiKey;
+                this.isValidKey = apiKey && apiKey.startsWith('AIza') && apiKey.length > 30;
+                console.log('AI Service initialized. Valid key?', this.isValidKey);
+            }
+            
+            async generateAyurvedaResponse(userPrompt) {
+                console.log('Sending to AI:', userPrompt.substring(0, 50) + '...');
+                
+                if (!this.isValidKey) {
+                    console.log('❌ No valid API key, using fallback responses');
+                    return this.getFallbackResponse(userPrompt);
+                }
+                
+                try {
+                    const response = await fetch(
+                        `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${this.apiKey}`,
+                        {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                contents: [{
+                                    parts: [{
+                                        text: `You are "GuruJi AI", a wise Ayurvedic expert and BAMS clinical professor. Answer this student query about Ayurveda or BAMS studies:
+                                        
+                                        Student Question: "${userPrompt}"
+                                        
+                                        Guidelines for response:
+                                        1. Answer as a knowledgeable Ayurvedic expert
+                                        2. Keep it educational and informative
+                                        3. Include relevant Sanskrit terms when appropriate
+                                        4. Mention if it's related to any BAMS subject
+                                        5. Keep response concise (2-3 paragraphs max)
+                                        6. End with "For educational purposes only. Consult a qualified Ayurvedic practitioner for personal health advice."
+                                        7. Always be helpful and respectful`
+                                    }]
+                                }],
+                                generationConfig: {
+                                    temperature: 0.7,
+                                    maxOutputTokens: 800,
+                                    topP: 0.8,
+                                    topK: 40
+                                }
+                            })
+                        }
+                    );
+                    
+                    if (!response.ok) {
+                        throw new Error(`API error: ${response.status}`);
+                    }
+                    
+                    const data = await response.json();
+                    
+                    if (data.candidates?.[0]?.content?.parts?.[0]?.text) {
+                        return data.candidates[0].content.parts[0].text;
+                    } else {
+                        throw new Error('Invalid response structure');
+                    }
+                    
+                } catch (error) {
+                    console.error('Gemini API Error:', error);
+                    return this.getFallbackResponse(userPrompt);
+                }
+            }
+            
+            getFallbackResponse(userPrompt) {
+                const lowerPrompt = userPrompt.toLowerCase();
+                
+                if (lowerPrompt.includes('dosha') || lowerPrompt.includes('vata') || lowerPrompt.includes('pitta') || lowerPrompt.includes('kapha')) {
+                    return "According to Ayurveda, the Tridosha theory is fundamental. There are three biological energies: Vata (air + space), Pitta (fire + water), and Kapha (earth + water). Each person has a unique combination called Prakriti. Balance leads to health, imbalance to disease.\n\nVata governs movement, Pitta governs transformation, Kapha governs structure.\n\nFor educational purposes only. Consult a qualified Ayurvedic practitioner for personal assessment.";
+                }
+                else if (lowerPrompt.includes('charaka') || lowerPrompt.includes('samhita')) {
+                    return "Charaka Samhita is one of the foundational texts of Ayurveda, primarily focusing on internal medicine (Kayachikitsa). Compiled by Acharya Charaka around 300 BCE-200 CE. It contains 8 sections and 120 chapters describing fundamental principles like Panchamahabhuta, Tridosha, diagnosis methods, and treatments.\n\nEssential reading for all BAMS students.\n\nFor educational purposes only.";
+                }
+                else if (lowerPrompt.includes('herb') || lowerPrompt.includes('digest') || lowerPrompt.includes('triphala')) {
+                    return "Common Ayurvedic herbs for digestion:\n\n• Triphala (Amalaki, Bibhitaki, Haritaki): Gentle bowel regulator, antioxidant\n• Ginger (Shunthi): Improves digestion, reduces nausea\n• Fennel (Saunf): Relieves bloating and gas\n• Cumin (Jeera): Enhances digestive fire (Agni)\n\nDosage: Typically 1-2 teaspoons with warm water. Consult an Ayurvedic physician for personalized advice.\n\nFor educational purposes only.";
+                }
+                else if (lowerPrompt.includes('panchakarma')) {
+                    return "Panchakarma refers to five therapeutic purification procedures:\n1. Vamana: Therapeutic emesis for Kapha disorders\n2. Virechana: Therapeutic purgation for Pitta disorders\n3. Basti: Medicated enema for Vata disorders\n4. Nasya: Nasal administration of medicines\n5. Raktamokshana: Bloodletting (rarely used today)\n\nRequires professional supervision. For educational purposes only.";
+                }
+                else if (lowerPrompt.includes('study') || lowerPrompt.includes('tip') || lowerPrompt.includes('exam')) {
+                    return "BAMS Study Tips:\n1. Understand concepts rather than memorizing\n2. Relate Ayurvedic principles to modern medicine\n3. Practice writing answers in point form\n4. Use Sanskrit terms appropriately\n5. Revise regularly with self-assessment\n6. Group study for difficult topics\n7. Focus on important topics weightage-wise\n\nSuccess comes with consistent effort!";
+                }
+                else if (lowerPrompt.includes('hello') || lowerPrompt.includes('hi') || lowerPrompt.includes('namaste')) {
+                    return "Namaste! 🙏 I'm GuruJi AI, your Ayurvedic educational guide. I can help you with:\n\n• BAMS Curriculum questions\n• Ayurvedic principles and concepts\n• Herbal medicine information\n• Study guidance and exam tips\n• Clinical correlations\n\nPlease ask your Ayurveda-related question!";
+                }
+                else {
+                    return "Thank you for your question. As an AI educational assistant, I focus on Ayurveda and BAMS studies. For specific medical advice, please consult a qualified Ayurvedic practitioner. \n\nYou can ask me about:\n- Ayurvedic principles (Doshas, Dhatus, Malas)\n- BAMS subjects and curriculum\n- Herbal medicines and formulations\n- Study techniques for Ayurveda exams\n- Classical texts (Charaka, Sushruta Samhita)\n\nFor educational purposes only.";
+                }
+            }
+        }
+        
+        // Initialize AI Service
+        const aiService = new GeminiAIService(GEMINI_API_KEY);
+        
+        // Hamburger Menu Toggle - Now on right side
+        const hamburger = document.getElementById('hamburger');
+        const navMenu = document.getElementById('nav-menu');
+        
+        hamburger.addEventListener('click', (e) => {
+            e.stopPropagation();
+            navMenu.classList.toggle('active');
+            hamburger.classList.toggle('active');
+        });
+        
+        // Close menu when clicking on a link
+        document.querySelectorAll('.nav-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+                hamburger.classList.remove('active');
+            });
+        });
+        
+        // Close menu when clicking outside
+        document.addEventListener('click', (event) => {
+            if (!navMenu.contains(event.target) && !hamburger.contains(event.target)) {
+                navMenu.classList.remove('active');
+                hamburger.classList.remove('active');
+            }
+        });
+        
+        // Close menu on escape key
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                navMenu.classList.remove('active');
+                hamburger.classList.remove('active');
+            }
+        });
+
+        // Chatbot Functionality - UPDATED WITH GEMINI AI
+        const chatbotToggle = document.getElementById('chatbotToggle');
+        const chatbotWindow = document.getElementById('chatbotWindow');
+        const chatbotClose = document.getElementById('chatbotClose');
+        const chatbotMessages = document.getElementById('chatbotMessages');
+        const chatbotInput = document.getElementById('chatbotInput');
+        const chatbotSend = document.getElementById('chatbotSend');
+        const quickQuestions = document.getElementById('quickQuestions');
+        
+        let isChatbotOpen = false;
+        let isProcessing = false;
+        
+        // Toggle chatbot window
+        chatbotToggle.addEventListener('click', () => {
+            isChatbotOpen = !isChatbotOpen;
+            chatbotWindow.style.display = isChatbotOpen ? 'flex' : 'none';
+            // Scroll to bottom when opening
+            if (isChatbotOpen) {
+                setTimeout(() => {
+                    chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+                }, 100);
+            }
+        });
+        
+        chatbotClose.addEventListener('click', () => {
+            isChatbotOpen = false;
+            chatbotWindow.style.display = 'none';
+        });
+        
+        // Handle quick question buttons
+        document.querySelectorAll('.quick-question-btn').forEach(button => {
+            button.addEventListener('click', async function() {
+                if (isProcessing) return;
+                
+                const questionType = this.getAttribute('data-question');
+                let questionText = this.textContent;
+                
+                // Add user question
+                addMessage(questionText, 'user');
+                
+                // Disable all quick question buttons temporarily
+                document.querySelectorAll('.quick-question-btn').forEach(btn => {
+                    btn.style.opacity = '0.6';
+                    btn.style.pointerEvents = 'none';
+                });
+                
+                isProcessing = true;
+                
+                try {
+                    // Get AI response
+                    const response = await aiService.generateAyurvedaResponse(questionText);
+                    addMessage(response, 'bot');
+                } catch (error) {
+                    console.error('Error getting AI response:', error);
+                    addMessage("I apologize, I'm having difficulty responding. Please try again later or contact us directly.", 'bot');
+                } finally {
+                    // Re-enable buttons
+                    document.querySelectorAll('.quick-question-btn').forEach(btn => {
+                        btn.style.opacity = '1';
+                        btn.style.pointerEvents = 'auto';
+                    });
+                    isProcessing = false;
+                    chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+                }
+            });
+        });
+        
+        // Handle send button
+        chatbotSend.addEventListener('click', async () => {
+            await sendMessage();
+        });
+        
+        // Handle enter key in input
+        chatbotInput.addEventListener('keypress', async (e) => {
+            if (e.key === 'Enter' && !isProcessing) {
+                await sendMessage();
+            }
+        });
+        
+        async function sendMessage() {
+            if (isProcessing) return;
+            
+            const userMessage = chatbotInput.value.trim();
+            if (!userMessage) return;
+            
+            // Add user message
+            addMessage(userMessage, 'user');
+            chatbotInput.value = '';
+            isProcessing = true;
+            
+            // Show typing indicator
+            const typingIndicator = document.createElement('div');
+            typingIndicator.classList.add('message', 'bot-message');
+            typingIndicator.innerHTML = '<i>Consulting the Samhitas...</i>';
+            chatbotMessages.appendChild(typingIndicator);
+            chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+            
+            try {
+                // Get AI response
+                const response = await aiService.generateAyurvedaResponse(userMessage);
+                
+                // Remove typing indicator
+                chatbotMessages.removeChild(typingIndicator);
+                
+                // Add bot response
+                addMessage(response, 'bot');
+                
+            } catch (error) {
+                console.error('Error in sendMessage:', error);
+                
+                // Remove typing indicator
+                if (chatbotMessages.contains(typingIndicator)) {
+                    chatbotMessages.removeChild(typingIndicator);
+                }
+                
+                addMessage("I apologize, I'm having difficulty connecting to the AI service. Please try again or contact us at WhatsApp: 9376884568 for assistance.", 'bot');
+            } finally {
+                isProcessing = false;
+                chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+            }
+        }
+        
+        // Function to add messages to chat
+        function addMessage(text, sender) {
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('message');
+            messageDiv.classList.add(sender === 'user' ? 'user-message' : 'bot-message');
+            
+            // Format text with line breaks
+            const formattedText = text.replace(/\n/g, '<br>');
+            messageDiv.innerHTML = formattedText;
+            
+            chatbotMessages.appendChild(messageDiv);
+            chatbotMessages.scrollTop = chatbotMessages.scrollHeight;
+        }
+        
+        // Close chatbot when clicking outside
+        document.addEventListener('click', (event) => {
+            if (isChatbotOpen && 
+                !chatbotWindow.contains(event.target) && 
+                !chatbotToggle.contains(event.target)) {
+                isChatbotOpen = false;
+                chatbotWindow.style.display = 'none';
+            }
+        });
+        
+        // Prevent chatbot from closing when clicking inside
+        chatbotWindow.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+        
+        // Show API status
+        console.log('GuruJi AI Status:', GEMINI_API_KEY === 'YOUR_GEMINI_API_KEY_HERE' ? 
+            '⚠️ Using fallback responses - Add real API key for AI' : 
+            '✅ Gemini AI enabled');
+    </script>
+</body>
+</html>
