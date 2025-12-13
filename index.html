@@ -550,11 +550,7 @@
         const WHATSAPP_NUMBER = "9376884568";
         const WHATSAPP_LINK = `https://wa.me/91${WHATSAPP_NUMBER}`;
         const MASTER_ACCESS_CODE = "AYU-VEDA-2024";
-        
-        // Backend API endpoint (remove API key from frontend)
-        const BACKEND_API_URL = window.location.hostname === 'localhost' 
-            ? 'http://localhost:3000/api/chat' 
-            : '/api/chat'; // Use relative path in production
+        const BACKEND_URL = "http://localhost:3000"; // Your backend server URL
 
         // ====================== CURRICULUM DATA ======================
         const generateChapters = (subjectName, count) => {
@@ -730,85 +726,245 @@
             }
         ];
 
-        // ====================== AI SERVICE (USES BACKEND) ======================
-        class BackendAIService {
-            constructor() {
-                console.log('AI Service initialized with backend proxy');
+        // ====================== AI SERVICE (UPDATED FOR BACKEND) ======================
+        class SecureGeminiService {
+            constructor(backendUrl) {
+                this.backendUrl = backendUrl;
             }
 
             async generateAyurvedaResponse(userPrompt) {
-                console.log('📤 Sending to backend API:', userPrompt.substring(0, 50) + '...');
+                console.log('🤖 Sending to backend:', userPrompt.substring(0, 100) + '...');
                 
                 try {
-                    const response = await fetch(BACKEND_API_URL, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            message: userPrompt
-                        })
-                    });
+                    const controller = new AbortController();
+                    const timeoutId = setTimeout(() => {
+                        controller.abort();
+                        console.log('⏰ Request timeout');
+                    }, 45000);
+
+                    const response = await fetch(
+                        `${this.backendUrl}/api/chat`,
+                        {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            signal: controller.signal,
+                            body: JSON.stringify({ 
+                                message: userPrompt,
+                                system_instruction: "You are 'AyurBot', an Ayurvedic expert for BAMS students. Provide comprehensive Ayurvedic information with proper conclusions. Include Sanskrit terms where relevant. Always end with a proper conclusion."
+                            })
+                        }
+                    );
+
+                    clearTimeout(timeoutId);
                     
-                    console.log('Backend response status:', response.status);
+                    console.log('📊 Backend Status:', response.status);
                     
                     if (!response.ok) {
                         const errorText = await response.text();
-                        console.error('❌ Backend API Error:', response.status, errorText);
-                        console.log('🟡 Falling back to mock response');
-                        return this.getMockResponse(userPrompt);
+                        console.error('❌ Backend Error:', response.status, errorText);
+                        throw new Error(`Backend Error ${response.status}: ${errorText}`);
                     }
-                    
+
                     const data = await response.json();
-                    console.log('Backend response data:', data);
+                    console.log('📦 Backend Response received');
                     
+                    // Handle the response from your backend
+                    let responseText = '';
+                    
+                    // Method 1: Standard response format from your server.js
                     if (data.candidates && 
                         data.candidates[0] && 
                         data.candidates[0].content && 
                         data.candidates[0].content.parts && 
                         data.candidates[0].content.parts[0]) {
-                        console.log('✅ BACKEND API RESPONSE SUCCESS');
-                        return data.candidates[0].content.parts[0].text;
-                    } else {
-                        console.warn('⚠️ Unexpected backend response structure:', data);
-                        console.log('🟡 Falling back to mock response');
-                        return this.getMockResponse(userPrompt);
+                        responseText = data.candidates[0].content.parts[0].text;
                     }
                     
+                    // Method 2: If you modified server.js to return just the text
+                    if (!responseText && data.text) {
+                        responseText = data.text;
+                    }
+                    
+                    // Method 3: Error fallback
+                    if (!responseText && data.error) {
+                        responseText = `Error: ${data.error}`;
+                    }
+                    
+                    // Fallback to mock response if nothing works
+                    if (!responseText || responseText.length < 10) {
+                        console.warn('Empty response from backend, using mock');
+                        return this.getMockResponse(userPrompt);
+                    }
+
+                    return this.ensureCompleteResponse(responseText);
+
                 } catch (error) {
-                    console.error('❌ Network Error connecting to backend:', error);
-                    console.log('🟡 Falling back to mock response');
+                    console.error('❌ Service Error:', error.name, error.message);
+                    
+                    if (error.name === 'AbortError') {
+                        return "The request is taking too long. Please try again with a more specific question.";
+                    }
+                    
+                    if (error.message.includes('Failed to fetch')) {
+                        return "⚠️ Cannot connect to the AI service. Please make sure the backend server is running (node server.js).";
+                    }
+                    
                     return this.getMockResponse(userPrompt);
                 }
             }
 
+            ensureCompleteResponse(text) {
+                if (!text || text.length < 50) return text;
+                
+                const trimmed = text.trim();
+                const lastChar = trimmed.charAt(trimmed.length - 1);
+                
+                if (!['.', '!', '?', '。', '！', '？'].includes(lastChar)) {
+                    const lastSentenceEnd = Math.max(
+                        trimmed.lastIndexOf('.'),
+                        trimmed.lastIndexOf('!'),
+                        trimmed.lastIndexOf('?'),
+                        trimmed.lastIndexOf('。'),
+                        trimmed.lastIndexOf('！'),
+                        trimmed.lastIndexOf('？')
+                    );
+                    
+                    if (lastSentenceEnd > trimmed.length - 50 && lastSentenceEnd > 0) {
+                        return trimmed.substring(0, lastSentenceEnd + 1);
+                    } else {
+                        return trimmed + "...";
+                    }
+                }
+                
+                return trimmed;
+            }
+
             getMockResponse(userPrompt) {
-                console.log('🔶 Generating mock response for:', userPrompt);
                 const lowerPrompt = userPrompt.toLowerCase();
                 
+                // Comprehensive mock responses
                 if (lowerPrompt.includes('dosha') || lowerPrompt.includes('vata') || lowerPrompt.includes('pitta') || lowerPrompt.includes('kapha')) {
-                    return "According to Ayurveda, there are three fundamental biological energies called doshas: Vata (composed of air and space), Pitta (composed of fire and water), and Kapha (composed of earth and water). Each individual has a unique combination of these doshas called Prakriti, which determines their physical, mental, and emotional characteristics. Balance of these doshas is essential for health, while imbalance leads to disease.\n\nFor educational purposes only. Consult a qualified Ayurvedic practitioner for personal assessment.";
+                    return `According to Ayurveda, the three doshas are fundamental biological energies that govern all physical and mental processes. 
+
+1. **Vata Dosha** (Air + Space): Governs movement, circulation, breathing, and nerve impulses. People with dominant Vata are creative, energetic, and thin-framed. Imbalance causes anxiety, dry skin, constipation, and insomnia.
+
+2. **Pitta Dosha** (Fire + Water): Controls digestion, metabolism, and energy production. Pitta-dominant individuals are intelligent, goal-oriented with medium build. Imbalance leads to anger, inflammation, acidity, and skin rashes.
+
+3. **Kapha Dosha** (Earth + Water): Provides structure, stability, and lubrication. Kapha types are calm, strong, with sturdy frames. Imbalance results in weight gain, lethargy, congestion, and depression.
+
+Each person has a unique combination called Prakriti. Ayurvedic treatments aim to balance these doshas through diet, lifestyle, herbs, and therapies. For personal assessment, consult a qualified Ayurvedic practitioner.`;
                 }
-                else if (lowerPrompt.includes('triphala') || lowerPrompt.includes('digest') || lowerPrompt.includes('constipation')) {
-                    return "Triphala is a classic Ayurvedic formulation consisting of three fruits: Amalaki (Emblica officinalis), Bibhitaki (Terminalia bellirica), and Haritaki (Terminalia chebula). It is considered a tridoshic rasayana, meaning it balances all three doshas. Benefits include:\n1. Supports healthy digestion and elimination\n2. Acts as a gentle detoxifier\n3. Contains antioxidants\n4. Supports overall wellness\n\nDosage: Typically 1-2 teaspoons with warm water at bedtime.\n\nDisclaimer: This information is for educational purposes. Consult an Ayurvedic physician for personalized advice.";
+                else if (lowerPrompt.includes('triphala') || lowerPrompt.includes('digest')) {
+                    return `Triphala is one of the most important Ayurvedic formulations, consisting of three fruits:
+
+**Components:**
+1. **Amalaki** (Emblica officinalis) - Rich in Vitamin C, rejuvenative
+2. **Bibhitaki** (Terminalia bellirica) - Supports respiratory health
+3. **Haritaki** (Terminalia chebula) - Promotes digestion and elimination
+
+**Benefits:**
+- Gentle detoxification without depleting the body
+- Improves digestion and assimilation
+- Acts as a natural antioxidant
+- Supports healthy elimination
+- Balances all three doshas (Tridoshic)
+- Enhances nutrient absorption
+
+**Usage:** Typically 1-2 teaspoons with warm water before bedtime.
+
+**Clinical Note:** Triphala is considered a Rasayana (rejuvenative) and is safe for long-term use. It's particularly beneficial for digestive issues, eye health, and overall wellness.
+
+**Disclaimer:** This information is for educational purposes. Consult an Ayurvedic physician for personalized dosage and duration.`;
                 }
-                else if (lowerPrompt.includes('charaka') || lowerPrompt.includes('samhita') || lowerPrompt.includes('text')) {
-                    return "Charaka Samhita is one of the foundational texts of Ayurveda, primarily focusing on internal medicine (Kayachikitsa). It was compiled by Acharya Charaka around 300 BCE-200 CE. Key features:\n\n1. Contains 8 Sthanas (sections) and 120 chapters\n2. Describes fundamental principles like Panchamahabhuta, Tridosha, Saptadhatu\n3. Details diagnosis through Nadi Pariksha, Mutra Pariksha, etc.\n4. Explains treatment modalities including Shodhana and Shamana\n5. Emphasizes the importance of diet (Ahara) and lifestyle (Vihara)\n\nIt remains essential reading for all BAMS students and Ayurvedic practitioners.";
+                else if (lowerPrompt.includes('charaka') || lowerPrompt.includes('samhita')) {
+                    return `The Charaka Samhita is the foundational text of Ayurveda, primarily focused on internal medicine (Kayachikitsa).
+
+**Historical Context:**
+- Compiled by Acharya Charaka around 300 BCE-200 CE
+- Later revised by Dridhabala
+- Originally contained 8 sections and 120 chapters
+
+**Key Contributions:**
+1. **Concept of Tridosha:** Detailed explanation of Vata, Pitta, Kapha
+2. **Saptadhatu Theory:** Seven tissue layers of the body
+3. **Agni (Digestive Fire):** Central to health and disease
+4. **Ama (Toxins):** Concept of undigested metabolic waste
+5. **Ojas:** Essence of immunity and vitality
+
+**Clinical Significance:**
+- Describes diagnosis through Nadi Pariksha (pulse), Mutra Pariksha (urine)
+- Details treatment approaches: Shodhana (purification), Shamana (palliation)
+- Emphasizes preventive medicine and daily routine (Dinacharya)
+- Contains extensive materia medica with 341 herbs
+
+The Charaka Samhita remains essential for BAMS students and forms the theoretical foundation of Ayurvedic practice. Its principles continue to guide clinical decisions in modern Ayurveda.`;
                 }
-                else if (lowerPrompt.includes('panchakarma') || lowerPrompt.includes('detox') || lowerPrompt.includes('purification')) {
-                    return "Panchakarma refers to five therapeutic procedures for deep purification and detoxification:\n\n1. Vamana: Therapeutic emesis for Kapha disorders\n2. Virechana: Therapeutic purgation for Pitta disorders\n3. Basti: Medicated enema for Vata disorders\n4. Nasya: Nasal administration of medicines\n5. Raktamokshana: Bloodletting (rarely used today)\n\nEach procedure has specific Purvakarma (preparation), Pradhana Karma (main procedure), and Paschatkarma (post-care). Panchakarma should only be performed under the supervision of a qualified Ayurvedic physician after proper assessment.\n\nEducational note: These are specialized procedures requiring professional guidance.";
-                }
-                else if (lowerPrompt.includes('herb') || lowerPrompt.includes('turmeric') || lowerPrompt.includes('ashwagandha') || lowerPrompt.includes('tulsi')) {
-                    return "Common Ayurvedic herbs and their properties:\n\n1. Turmeric (Haridra):\n   - Rasa: Katu, Tikta\n   - Virya: Ushna\n   - Prabhava: Anti-inflammatory, antioxidant\n   - Uses: Wound healing, skin conditions, digestive support\n\n2. Ashwagandha (Withania somnifera):\n   - Rasa: Tikta, Katu, Madhura\n   - Virya: Ushna\n   - Prabhava: Adaptogen, rejuvenative\n   - Uses: Stress reduction, strength building, sleep support\n\n3. Tulsi (Ocimum sanctum):\n   - Rasa: Katu, Tikta\n   - Virya: Ushna\n   - Prabhava: Immunomodulator\n   - Uses: Respiratory health, fever, common cold\n\nNote: Herb-drug interactions are possible. Consult an Ayurvedic practitioner.";
+                else if (lowerPrompt.includes('panchakarma')) {
+                    return `Panchakarma refers to five therapeutic purification procedures in Ayurveda:
+
+**The Five Procedures:**
+1. **Vamana** (Therapeutic Emesis): For Kapha disorders like asthma, diabetes, obesity
+2. **Virechana** (Therapeutic Purgation): For Pitta disorders like skin diseases, liver issues
+3. **Basti** (Medicated Enema): For Vata disorders like arthritis, constipation, neurological conditions
+4. **Nasya** (Nasal Administration): For head and neck disorders like sinusitis, migraines
+5. **Raktamokshana** (Bloodletting): For blood disorders (rarely used today)
+
+**Three Stages:**
+1. **Purvakarma** (Preparation): Oleation (Snehana) and Sudation (Swedana)
+2. **Pradhana Karma** (Main Procedure): One of the five treatments
+3. **Paschatkarma** (Post-care): Gradual diet and lifestyle normalization
+
+**Clinical Indications:**
+- Chronic diseases resistant to conventional treatment
+- Detoxification and rejuvenation
+- Seasonal cleansing (especially during monsoon and spring)
+- Pre-conception care and wellness programs
+
+**Important:** Panchakarma should only be performed under supervision of qualified Ayurvedic physicians after proper assessment of Prakriti and Vikriti.
+
+**Educational Note:** These are specialized procedures requiring proper infrastructure and expertise.`;
                 }
                 else if (lowerPrompt.includes('hello') || lowerPrompt.includes('hi') || lowerPrompt.includes('namaste')) {
-                    return "Namaste! 🙏 I am Ayurveez Assistant, your Ayurvedic educational guide. I can help you with:\n\n• Understanding Ayurvedic concepts and principles\n• Information about BAMS curriculum subjects\n• Explanations of herbs, formulations, and treatments\n• Study guidance for Charaka, Sushruta, and other Samhitas\n• Clinical correlations and modern applications\n\nPlease ask your question about Ayurveda or BAMS studies.";
-                }
-                else if (lowerPrompt.includes('treatment') || lowerPrompt.includes('disease') || lowerPrompt.includes('cure')) {
-                    return "As an educational assistant, I can provide information about Ayurvedic approaches to health conditions, but please note:\n\n1. Ayurvedic treatment is personalized based on Prakriti, Vikriti, and other factors\n2. Proper diagnosis by a qualified Vaidya is essential\n3. Treatments may include dietary changes, herbal medicines, Panchakarma, etc.\n4. Always consult with a registered Ayurvedic practitioner for personal health concerns\n\nI can explain general Ayurvedic principles, but specific medical advice requires consultation with a healthcare professional.";
+                    return `Namaste! 🙏 I am Ayurveez Assistant, your Ayurvedic educational guide.
+
+I can help you with:
+• **BAMS Curriculum:** All professional year subjects and topics
+• **Ayurvedic Principles:** Doshas, Dhatus, Malas, Agni, Ojas
+• **Herbs & Formulations:** Dravyaguna, Rasashastra, Bhaishajya Kalpana
+• **Clinical Concepts:** Diagnosis, treatment protocols, Panchakarma
+• **Samhita Studies:** Charaka, Sushruta, Ashtanga Hridaya explanations
+• **Exam Preparation:** Important topics and question patterns
+
+Please ask your specific question about Ayurveda or BAMS studies. For example:
+- "Explain the concept of Agni"
+- "What are the properties of Ashwagandha?"
+- "Describe the treatment for Amavata (rheumatoid arthritis)"
+- "Explain the eight branches of Ayurveda"
+
+I'm here to provide educational information to support your Ayurvedic studies.`;
                 }
                 else {
-                    return "Namaste! I'm Ayurveez Assistant, your Ayurvedic education guide. I can help with:\n\n📚 BAMS Curriculum: Questions about Padartha Vigyan, Dravyaguna, Charaka Samhita, etc.\n🌿 Ayurvedic Principles: Doshas, Dhatus, Malas, Agni, Ojas\n💊 Herbs & Formulations: Common Ayurvedic medicines and their uses\n🏥 Clinical Concepts: Diagnostic methods and treatment approaches\n📖 Samhita Studies: Explanations of classical texts\n\nPlease ask a specific Ayurveda-related question, and I'll provide educational information.";
+                    return `Namaste! I'm Ayurveez Assistant, here to help with your Ayurvedic education journey.
+
+I specialize in:
+📚 **BAMS Curriculum Support**
+🌿 **Ayurvedic Principles & Philosophy**
+💊 **Herbal Pharmacology (Dravyaguna)**
+🏥 **Clinical Applications & Treatments**
+📖 **Classical Text Interpretations**
+
+**Sample questions you can ask:**
+1. "What are the five types of Vata?"
+2. "Explain the Saptadhatu theory"
+3. "Describe the preparation of Triphala"
+4. "What is the Ayurvedic approach to diabetes?"
+5. "Explain the importance of Dinacharya"
+
+**Remember:** My responses are for educational purposes. For personal health concerns, always consult a qualified Ayurvedic practitioner.
+
+Please ask your specific question, and I'll provide detailed, complete information to support your learning.`;
                 }
             }
         }
@@ -963,7 +1119,7 @@
             }
         }
 
-        // ====================== CHATBOT COMPONENT ======================
+        // ====================== CHATBOT COMPONENT (UPDATED) ======================
         class ChatBot {
             constructor() {
                 this.state = {
@@ -978,7 +1134,8 @@
                     inputValue: '',
                     isLoading: false
                 };
-                this.aiService = new BackendAIService();
+                // Use the secure backend service instead of direct API
+                this.aiService = new SecureGeminiService(BACKEND_URL);
                 this.render();
             }
 
@@ -1012,9 +1169,9 @@
                 this.scrollToBottom();
 
                 try {
-                    console.log('📤 Sending message to backend:', inputValue);
+                    console.log('📤 Sending to backend service:', inputValue);
                     const responseText = await this.aiService.generateAyurvedaResponse(inputValue);
-                    console.log('📥 Received AI response:', responseText.substring(0, 100) + '...');
+                    console.log('📥 Response received from backend');
                     
                     const botMsg = {
                         id: (Date.now() + 1).toString(),
@@ -1024,11 +1181,11 @@
                     
                     this.state.messages.push(botMsg);
                 } catch (error) {
-                    console.error('❌ Chat error:', error);
+                    console.error('Chat error:', error);
                     const errorMsg = {
                         id: (Date.now() + 1).toString(),
                         role: 'model',
-                        text: "I apologize, I'm having difficulty responding. Please try again or check your connection."
+                        text: "I apologize, I'm having difficulty responding. Please make sure the backend server is running (node server.js)."
                     };
                     this.state.messages.push(errorMsg);
                 }
@@ -1121,9 +1278,6 @@
                             <p class="text-xs text-gray-500 mt-2 text-center">
                                 Educational purposes only • Not medical advice
                             </p>
-                            <p class="text-xs text-gray-400 mt-1 text-center">
-                                🔒 API Key Secured via Backend
-                            </p>
                         </div>
                     </div>
                 `;
@@ -1152,7 +1306,6 @@
             init() {
                 window.chatBotInstance = new ChatBot();
                 console.log('Ayurveez App initialized');
-                console.log('Backend API URL:', BACKEND_API_URL);
             }
 
             handleProffClick(proff) {
