@@ -1,0 +1,1509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ayurveez: BAMS Made Easy</title>
+    <style>
+        /* ====================== CUSTOM AYURVEDIC COLOR PALETTE ====================== */
+        :root {
+            --ayur-base: #fdfbf7;
+            --ayur-primary: #854d0e;
+            --ayur-secondary: #14532d;
+            --ayur-accent: #b45309;
+            --ayur-text: #292524;
+            --ayur-light: #f5f5f4;
+            --ayur-green: #166534;
+            --ayur-orange: #ea580c;
+            --ayur-gold: #d97706;
+            --ayur-parchment: #fef3c7;
+        }
+
+        /* ====================== BASE STYLES ====================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background-color: var(--ayur-base);
+            color: var(--ayur-text);
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ====================== TYPOGRAPHY ====================== */
+        h1, h2, h3, h4, .font-serif {
+            font-family: Georgia, 'Times New Roman', Times, serif;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+        }
+
+        .font-sans {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            line-height: 1.2;
+        }
+
+        h2 {
+            font-size: 2rem;
+            line-height: 1.3;
+        }
+
+        h3 {
+            font-size: 1.5rem;
+            line-height: 1.4;
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        /* ====================== UTILITY CLASSES ====================== */
+        .hidden {
+            display: none !important;
+        }
+
+        .block {
+            display: block;
+        }
+
+        .inline-block {
+            display: inline-block;
+        }
+
+        .flex {
+            display: flex;
+        }
+
+        .inline-flex {
+            display: inline-flex;
+        }
+
+        .grid {
+            display: grid;
+        }
+
+        .flex-col {
+            flex-direction: column;
+        }
+
+        .items-center {
+            align-items: center;
+        }
+
+        .items-start {
+            align-items: flex-start;
+        }
+
+        .items-end {
+            align-items: flex-end;
+        }
+
+        .justify-center {
+            justify-content: center;
+        }
+
+        .justify-between {
+            justify-content: space-between;
+        }
+
+        .justify-end {
+            justify-content: flex-end;
+        }
+
+        .flex-1 {
+            flex: 1 1 0%;
+        }
+
+        .flex-shrink-0 {
+            flex-shrink: 0;
+        }
+
+        .flex-grow {
+            flex-grow: 1;
+        }
+
+        .gap-1 { gap: 0.25rem; }
+        .gap-2 { gap: 0.5rem; }
+        .gap-3 { gap: 0.75rem; }
+        .gap-4 { gap: 1rem; }
+        .gap-6 { gap: 1.5rem; }
+        .gap-8 { gap: 2rem; }
+
+        .space-y-1 > * + * { margin-top: 0.25rem; }
+        .space-y-2 > * + * { margin-top: 0.5rem; }
+        .space-y-3 > * + * { margin-top: 0.75rem; }
+        .space-y-4 > * + * { margin-top: 1rem; }
+        .space-y-6 > * + * { margin-top: 1.5rem; }
+        .space-y-8 > * + * { margin-top: 2rem; }
+
+        .space-x-2 > * + * { margin-left: 0.5rem; }
+        .space-x-4 > * + * { margin-left: 1rem; }
+        .space-x-8 > * + * { margin-left: 2rem; }
+
+        .w-full { width: 100%; }
+        .w-6 { width: 1.5rem; }
+        .w-8 { width: 2rem; }
+        .w-10 { width: 2.5rem; }
+        .w-12 { width: 3rem; }
+        .w-64 { width: 16rem; }
+        .max-w-lg { max-width: 32rem; }
+        .max-w-2xl { max-width: 42rem; }
+        .max-w-7xl { max-width: 80rem; }
+        .max-w-\[90vw\] { max-width: 90vw; }
+
+        .h-6 { height: 1.5rem; }
+        .h-8 { height: 2rem; }
+        .h-10 { height: 2.5rem; }
+        .h-12 { height: 3rem; }
+        .h-20 { height: 5rem; }
+        .h-32 { height: 8rem; }
+        .h-64 { height: 16rem; }
+        .min-h-screen { min-height: 100vh; }
+
+        .p-2 { padding: 0.5rem; }
+        .p-3 { padding: 0.75rem; }
+        .p-4 { padding: 1rem; }
+        .p-6 { padding: 1.5rem; }
+        .p-8 { padding: 2rem; }
+
+        .px-2 { padding-left: 0.5rem; padding-right: 0.5rem; }
+        .px-3 { padding-left: 0.75rem; padding-right: 0.75rem; }
+        .px-4 { padding-left: 1rem; padding-right: 1rem; }
+        .px-6 { padding-left: 1.5rem; padding-right: 1.5rem; }
+        .py-1 { padding-top: 0.25rem; padding-bottom: 0.25rem; }
+        .py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+        .py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
+        .py-4 { padding-top: 1rem; padding-bottom: 1rem; }
+        .py-6 { padding-top: 1.5rem; padding-bottom: 1.5rem; }
+        .py-8 { padding-top: 2rem; padding-bottom: 2rem; }
+        .py-12 { padding-top: 3rem; padding-bottom: 3rem; }
+
+        .m-0 { margin: 0; }
+        .mx-auto { margin-left: auto; margin-right: auto; }
+        .my-4 { margin-top: 1rem; margin-bottom: 1rem; }
+        .mt-1 { margin-top: 0.25rem; }
+        .mt-2 { margin-top: 0.5rem; }
+        .mt-4 { margin-top: 1rem; }
+        .mt-6 { margin-top: 1.5rem; }
+        .mt-8 { margin-top: 2rem; }
+        .mt-12 { margin-top: 3rem; }
+        .mt-20 { margin-top: 5rem; }
+        .mb-1 { margin-bottom: 0.25rem; }
+        .mb-2 { margin-bottom: 0.5rem; }
+        .mb-3 { margin-bottom: 0.75rem; }
+        .mb-4 { margin-bottom: 1rem; }
+        .mb-6 { margin-bottom: 1.5rem; }
+        .mb-8 { margin-bottom: 2rem; }
+        .mb-12 { margin-bottom: 3rem; }
+
+        .text-xs { font-size: 0.75rem; line-height: 1rem; }
+        .text-sm { font-size: 0.875rem; line-height: 1.25rem; }
+        .text-base { font-size: 1rem; line-height: 1.5rem; }
+        .text-lg { font-size: 1.125rem; line-height: 1.75rem; }
+        .text-xl { font-size: 1.25rem; line-height: 1.75rem; }
+        .text-2xl { font-size: 1.5rem; line-height: 2rem; }
+        .text-3xl { font-size: 1.875rem; line-height: 2.25rem; }
+        .text-4xl { font-size: 2.25rem; line-height: 2.5rem; }
+        .text-5xl { font-size: 3rem; line-height: 1; }
+        .text-6xl { font-size: 3.75rem; line-height: 1; }
+
+        .font-normal { font-weight: 400; }
+        .font-medium { font-weight: 500; }
+        .font-semibold { font-weight: 600; }
+        .font-bold { font-weight: 700; }
+        .font-black { font-weight: 900; }
+
+        .text-center { text-align: center; }
+        .text-right { text-align: right; }
+        .text-left { text-align: left; }
+
+        .text-white { color: white; }
+        .text-black { color: black; }
+        .text-gray-400 { color: #9ca3af; }
+        .text-gray-500 { color: #6b7280; }
+        .text-gray-600 { color: #4b5563; }
+        .text-gray-700 { color: #374151; }
+        .text-gray-800 { color: #1f2937; }
+        .text-gray-900 { color: #111827; }
+        .text-red-600 { color: #dc2626; }
+        .text-green-600 { color: #16a34a; }
+        .text-emerald-100 { color: #d1fae5; }
+        .text-emerald-200 { color: #a7f3d0; }
+        .text-orange-200 { color: #fed7aa; }
+        .text-orange-800 { color: #9a3412; }
+        .text-yellow-400 { color: #fbbf24; }
+        .text-yellow-500 { color: #f59e0b; }
+        .text-yellow-600 { color: #d97706; }
+        .text-stone-200 { color: #e7e5e4; }
+        .text-stone-400 { color: #a8a29e; }
+        .text-stone-600 { color: #57534e; }
+
+        .bg-white { background-color: white; }
+        .bg-black { background-color: black; }
+        .bg-gray-50 { background-color: #f9fafb; }
+        .bg-gray-100 { background-color: #f3f4f6; }
+        .bg-gray-200 { background-color: #e5e7eb; }
+        .bg-orange-50 { background-color: #fff7ed; }
+        .bg-orange-100 { background-color: #ffedd5; }
+        .bg-orange-200 { background-color: #fed7aa; }
+        .bg-green-50 { background-color: #f0fdf4; }
+        .bg-green-100 { background-color: #dcfce7; }
+        .bg-green-200 { background-color: #bbf7d0; }
+        .bg-emerald-800 { background-color: #065f46; }
+        .bg-red-800 { background-color: #991b1b; }
+        .bg-stone-50 { background-color: #fafaf9; }
+        .bg-stone-100 { background-color: #f5f5f4; }
+        .bg-stone-200 { background-color: #e7e5e4; }
+        .bg-stone-300 { background-color: #d6d3d1; }
+        .bg-stone-900 { background-color: #1c1917; }
+        .bg-amber-700 { background-color: #b45309; }
+
+        .border { border: 1px solid; }
+        .border-0 { border: none; }
+        .border-2 { border-width: 2px; }
+        .border-4 { border-width: 4px; }
+        .border-t { border-top: 1px solid; }
+        .border-b { border-bottom: 1px solid; }
+        .border-gray-100 { border-color: #f3f4f6; }
+        .border-gray-200 { border-color: #e5e7eb; }
+        .border-gray-300 { border-color: #d1d5db; }
+        .border-orange-100 { border-color: #ffedd5; }
+        .border-orange-200 { border-color: #fed7aa; }
+        .border-green-100 { border-color: #dcfce7; }
+        .border-stone-100 { border-color: #f5f5f4; }
+        .border-stone-200 { border-color: #e7e5e4; }
+        .border-yellow-500 { border-color: #f59e0b; }
+
+        .rounded { border-radius: 0.25rem; }
+        .rounded-lg { border-radius: 0.5rem; }
+        .rounded-xl { border-radius: 0.75rem; }
+        .rounded-2xl { border-radius: 1rem; }
+        .rounded-full { border-radius: 9999px; }
+        .rounded-br-none { border-bottom-right-radius: 0; }
+        .rounded-bl-none { border-bottom-left-radius: 0; }
+
+        .shadow-sm { box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); }
+        .shadow { box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06); }
+        .shadow-md { box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); }
+        .shadow-lg { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
+        .shadow-xl { box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
+        .shadow-2xl { box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); }
+
+        .opacity-0 { opacity: 0; }
+        .opacity-10 { opacity: 0.1; }
+        .opacity-20 { opacity: 0.2; }
+        .opacity-50 { opacity: 0.5; }
+        .opacity-90 { opacity: 0.9; }
+
+        .pointer-events-none { pointer-events: none; }
+        .cursor-pointer { cursor: pointer; }
+
+        .overflow-hidden { overflow: hidden; }
+        .overflow-y-auto { overflow-y: auto; }
+        .overflow-x-hidden { overflow-x: hidden; }
+
+        .relative { position: relative; }
+        .absolute { position: absolute; }
+        .fixed { position: fixed; }
+        .sticky { position: sticky; }
+
+        .inset-0 { top: 0; right: 0; bottom: 0; left: 0; }
+        .top-0 { top: 0; }
+        .top-3 { top: 0.75rem; }
+        .right-0 { right: 0; }
+        .right-3 { right: 0.75rem; }
+        .right-4 { right: 1rem; }
+        .right-6 { right: 1.5rem; }
+        .bottom-0 { bottom: 0; }
+        .bottom-4 { bottom: 1rem; }
+        .bottom-6 { bottom: 1.5rem; }
+        .bottom-24 { bottom: 6rem; }
+        .left-0 { left: 0; }
+        .left-3 { left: 0.75rem; }
+
+        .z-10 { z-index: 10; }
+        .z-20 { z-index: 20; }
+        .z-30 { z-index: 30; }
+        .z-40 { z-index: 40; }
+        .z-50 { z-index: 50; }
+
+        .transform { transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y)); }
+        .-translate-x-1 { --tw-translate-x: -0.25rem; }
+        .translate-x-1 { --tw-translate-x: 0.25rem; }
+        .translate-y-1 { --tw-translate-y: 0.25rem; }
+        .-translate-y-1 { --tw-translate-y: -0.25rem; }
+        .-translate-y-1\/2 { --tw-translate-y: -50%; }
+        .translate-x-1\/2 { --tw-translate-x: 50%; }
+        .scale-0 { --tw-scale-x: 0; --tw-scale-y: 0; }
+        .scale-100 { --tw-scale-x: 1; --tw-scale-y: 1; }
+        .rotate-90 { --tw-rotate: 90deg; }
+        .hover\:scale-110:hover { --tw-scale-x: 1.1; --tw-scale-y: 1.1; }
+
+        .transition-all { transition-property: all; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 150ms; }
+        .transition-colors { transition-property: color, background-color, border-color, text-decoration-color, fill, stroke; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 150ms; }
+        .transition-transform { transition-property: transform; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 150ms; }
+        .transition-opacity { transition-property: opacity; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 150ms; }
+        .duration-200 { transition-duration: 200ms; }
+        .duration-300 { transition-duration: 300ms; }
+
+        .backdrop-blur-sm { backdrop-filter: blur(4px); }
+        .backdrop-blur-md { backdrop-filter: blur(12px); }
+
+        .group:hover .group-hover\:translate-x-1 { --tw-translate-x: 0.25rem; }
+        .group:hover .group-hover\:-translate-x-1 { --tw-translate-x: -0.25rem; }
+        .group:hover .group-hover\:bg-ayur-primary { background-color: var(--ayur-primary); }
+        .group:hover .group-hover\:text-ayur-primary { color: var(--ayur-primary); }
+        .group:hover .group-hover\:text-white { color: white; }
+        .group:hover .group-hover\:border-ayur-primary { border-color: var(--ayur-primary); }
+        .group:hover .group-hover\:text-ayur-accent { color: var(--ayur-accent); }
+        .group:hover .group-hover\:opacity-100 { opacity: 1; }
+        .group:hover .group-hover\:scale-110 { --tw-scale-x: 1.1; --tw-scale-y: 1.1; }
+
+        .hover\:bg-ayur-accent:hover { background-color: var(--ayur-accent); }
+        .hover\:bg-emerald-800:hover { background-color: #065f46; }
+        .hover\:bg-green-700:hover { background-color: #15803d; }
+        .hover\:bg-stone-50:hover { background-color: #fafaf9; }
+        .hover\:text-ayur-primary:hover { color: var(--ayur-primary); }
+        .hover\:text-ayur-accent:hover { color: var(--ayur-accent); }
+        .hover\:underline:hover { text-decoration: underline; }
+        .hover\:shadow-xl:hover { box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); }
+
+        .focus\:border-ayur-primary:focus { border-color: var(--ayur-primary); }
+        .focus\:ring-0:focus { --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color); --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(0px + var(--tw-ring-offset-width)) var(--tw-ring-color); box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000); }
+        .focus-within\:border-ayur-secondary:focus-within { border-color: var(--ayur-secondary); }
+        .focus-within\:ring-1:focus-within { --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color); --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(1px + var(--tw-ring-offset-width)) var(--tw-ring-color); box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000); }
+        .focus-within\:ring-ayur-secondary\/20:focus-within { --tw-ring-color: rgba(20, 83, 45, 0.2); }
+
+        .disabled\:opacity-50:disabled { opacity: 0.5; }
+
+        .outline-none { outline: 2px solid transparent; outline-offset: 2px; }
+
+        .line-clamp-2 {
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+        }
+
+        .divide-y > * + * {
+            border-top-width: 1px;
+        }
+
+        .divide-stone-100 > * + * {
+            border-top-color: #f5f5f4;
+        }
+
+        /* ====================== ANIMATIONS ====================== */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        .animate-spin {
+            animation: spin 1s linear infinite;
+        }
+
+        /* ====================== CUSTOM STYLES ====================== */
+        .bg-gradient-to-br {
+            background-image: linear-gradient(to bottom right, var(--tw-gradient-stops));
+        }
+
+        .from-orange-800 {
+            --tw-gradient-from: #9a3412;
+            --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(154, 52, 18, 0));
+        }
+
+        .to-amber-700 {
+            --tw-gradient-to: #b45309;
+        }
+
+        .from-emerald-800 {
+            --tw-gradient-from: #065f46;
+            --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(6, 95, 70, 0));
+        }
+
+        .to-green-700 {
+            --tw-gradient-to: #15803d;
+        }
+
+        .from-stone-800 {
+            --tw-gradient-from: #292524;
+            --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to, rgba(41, 37, 36, 0));
+        }
+
+        .to-gray-700 {
+            --tw-gradient-to: #374151;
+        }
+
+        .blur-3xl {
+            filter: blur(64px);
+        }
+
+        .selection\:bg-ayur-accent ::selection {
+            background-color: var(--ayur-accent);
+        }
+
+        .selection\:text-white ::selection {
+            color: white;
+        }
+
+        /* ====================== AYURVEDIC THEME CLASSES ====================== */
+        .bg-ayur-base { background-color: var(--ayur-base); }
+        .bg-ayur-primary { background-color: var(--ayur-primary); }
+        .bg-ayur-secondary { background-color: var(--ayur-secondary); }
+        .bg-ayur-light { background-color: var(--ayur-light); }
+
+        .text-ayur-primary { color: var(--ayur-primary); }
+        .text-ayur-secondary { color: var(--ayur-secondary); }
+        .text-ayur-accent { color: var(--ayur-accent); }
+        .text-ayur-text { color: var(--ayur-text); }
+
+        .border-ayur-primary { border-color: var(--ayur-primary); }
+        .border-ayur-secondary { border-color: var(--ayur-secondary); }
+
+        /* ====================== SCROLLBAR ====================== */
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+
+        /* ====================== RESPONSIVE GRID ====================== */
+        .grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+        .grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+        @media (min-width: 768px) {
+            .md\:flex { display: flex; }
+            .md\:hidden { display: none; }
+            .md\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .md\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+            .md\:text-5xl { font-size: 3rem; line-height: 1; }
+        }
+
+        @media (min-width: 1024px) {
+            .lg\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+            .lg\:px-8 { padding-left: 2rem; padding-right: 2rem; }
+        }
+
+        /* ====================== INPUT STYLES ====================== */
+        input[type="text"] {
+            font-family: inherit;
+            font-size: inherit;
+        }
+
+        input:focus {
+            outline: none;
+            ring: none;
+        }
+
+        /* ====================== BUTTON STYLES ====================== */
+        button {
+            font-family: inherit;
+            cursor: pointer;
+            border: none;
+            background: none;
+        }
+
+        button:disabled {
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script>
+        // ====================== CONSTANTS ======================
+        const PAYMENT_UPI_ID = "thersk@axl";
+        const WHATSAPP_NUMBER = "9376884568";
+        const WHATSAPP_LINK = `https://wa.me/91${WHATSAPP_NUMBER}`;
+        const MASTER_ACCESS_CODE = "AYU-VEDA-2024";
+        const GEMINI_API_KEY = "AIzaSyDKivcGaRzVegFaKMdCQnIjMu6PoQ3eGzU"; // ⬅️ REPLACE WITH YOUR REAL KEY
+
+        // Debug function to check API key
+        function checkApiKey() {
+            console.log("=== API KEY DEBUG ===");
+            console.log("API Key exists:", !!GEMINI_API_KEY);
+            console.log("API Key length:", GEMINI_API_KEY ? GEMINI_API_KEY.length : 0);
+            console.log("API Key starts with AIza?:", GEMINI_API_KEY ? GEMINI_API_KEY.startsWith('AIza') : false);
+            console.log("API Key first 10 chars:", GEMINI_API_KEY ? GEMINI_API_KEY.substring(0, 10) + '...' : 'N/A');
+            console.log("API Key is placeholder?:", GEMINI_API_KEY === 'YOUR_GEMINI_API_KEY_HERE');
+            console.log("=== END DEBUG ===");
+        }
+
+        // Run debug check
+        checkApiKey();
+
+        // ====================== CURRICULUM DATA ======================
+        const generateChapters = (subjectName, count) => {
+            return Array.from({ length: count }).map((_, i) => ({
+                id: `ch-${subjectName}-${i}`,
+                title: `Chapter ${i + 1}: Introduction to ${subjectName} Part ${i + 1}`,
+                duration: `${Math.floor(Math.random() * 40 + 20)} mins`,
+                videoUrl: "#"
+            }));
+        };
+
+        const CURRICULUM = [
+            {
+                id: 1,
+                title: 'First Professional',
+                description: 'The Foundation of Ayurveda',
+                subjects: [
+                    { 
+                        id: 'p1s1', 
+                        name: 'Padartha Vigyan', 
+                        sanskritName: 'Philosophy of Ayurveda', 
+                        description: 'Fundamental principles of Ayurveda and Quantum Mechanics.', 
+                        chapters: generateChapters('Padartha Vigyan', 8) 
+                    },
+                    { 
+                        id: 'p1s2', 
+                        name: 'Sanskrit', 
+                        sanskritName: 'Sanskritam', 
+                        description: 'Language of Ayurveda texts.', 
+                        chapters: generateChapters('Sanskrit', 5) 
+                    },
+                    { 
+                        id: 'p1s3', 
+                        name: 'Kriya Sharir', 
+                        sanskritName: 'Physiology', 
+                        description: 'Human physiology in context of Dosha, Dhatu, Mala.', 
+                        chapters: generateChapters('Kriya Sharir', 12) 
+                    },
+                    { 
+                        id: 'p1s4', 
+                        name: 'Rachana Sharir', 
+                        sanskritName: 'Anatomy', 
+                        description: 'Human anatomy and dissection.', 
+                        chapters: generateChapters('Rachana Sharir', 15) 
+                    },
+                    { 
+                        id: 'p1s5', 
+                        name: 'Samhita Adhyayan', 
+                        sanskritName: 'Classical Texts I', 
+                        description: 'Study of Ashtanga Hridaya and Charaka Samhita.', 
+                        chapters: generateChapters('Samhita', 10) 
+                    },
+                ]
+            },
+            {
+                id: 2,
+                title: 'Second Professional',
+                description: 'Pharmacology & Pathology',
+                subjects: [
+                    { 
+                        id: 'p2s1', 
+                        name: 'Dravyaguna Vigyan', 
+                        sanskritName: 'Pharmacology', 
+                        description: 'Study of medicinal herbs and drugs.', 
+                        chapters: generateChapters('Dravyaguna', 20) 
+                    },
+                    { 
+                        id: 'p2s2', 
+                        name: 'Rasa Shastra', 
+                        sanskritName: 'Iatrochemistry', 
+                        description: 'Mineral and metal based medicines.', 
+                        chapters: generateChapters('Rasa Shastra', 12) 
+                    },
+                    { 
+                        id: 'p2s3', 
+                        name: 'Roga Nidan', 
+                        sanskritName: 'Pathology', 
+                        description: 'Diagnostics and pathology.', 
+                        chapters: generateChapters('Roga Nidan', 10) 
+                    },
+                    { 
+                        id: 'p2s4', 
+                        name: 'Agada Tantra', 
+                        sanskritName: 'Toxicology', 
+                        description: 'Forensic medicine and toxicology.', 
+                        chapters: generateChapters('Agada Tantra', 8) 
+                    },
+                    { 
+                        id: 'p2s5', 
+                        name: 'Swasthavritta', 
+                        sanskritName: 'Preventive Medicine', 
+                        description: 'Social and preventive medicine, Yoga.', 
+                        chapters: generateChapters('Swasthavritta', 10) 
+                    },
+                    { 
+                        id: 'p2s6', 
+                        name: 'Charaka Samhita (P)', 
+                        sanskritName: 'Classical Texts II', 
+                        description: 'Advanced study of Charaka Samhita.', 
+                        chapters: generateChapters('Charaka', 15) 
+                    },
+                ]
+            },
+            {
+                id: 3,
+                title: 'Final Professional',
+                description: 'Clinical Specializations',
+                subjects: [
+                    { 
+                        id: 'p3s1', 
+                        name: 'Kayachikitsa', 
+                        sanskritName: 'Internal Medicine', 
+                        description: 'General medicine and treatment.', 
+                        chapters: generateChapters('Kayachikitsa', 25) 
+                    },
+                    { 
+                        id: 'p3s2', 
+                        name: 'Panchakarma', 
+                        sanskritName: 'Detoxification', 
+                        description: 'Five procedures of purification.', 
+                        chapters: generateChapters('Panchakarma', 15) 
+                    },
+                    { 
+                        id: 'p3s3', 
+                        name: 'Shalya Tantra', 
+                        sanskritName: 'Surgery', 
+                        description: 'General surgery.', 
+                        chapters: generateChapters('Shalya', 18) 
+                    },
+                    { 
+                        id: 'p3s4', 
+                        name: 'Shalakya Tantra', 
+                        sanskritName: 'ENT & Ophthalmology', 
+                        description: 'Diseases above the clavicle.', 
+                        chapters: generateChapters('Shalakya', 12) 
+                    },
+                    { 
+                        id: 'p3s5', 
+                        name: 'Prasuti Tantra', 
+                        sanskritName: 'Obstetrics', 
+                        description: 'Pregnancy and childbirth.', 
+                        chapters: generateChapters('Prasuti', 14) 
+                    },
+                    { 
+                        id: 'p3s6', 
+                        name: 'Stri Roga', 
+                        sanskritName: 'Gynecology', 
+                        description: 'Women diseases.', 
+                        chapters: generateChapters('Stri Roga', 10) 
+                    },
+                    { 
+                        id: 'p3s7', 
+                        name: 'Kaumarbhritya', 
+                        sanskritName: 'Pediatrics', 
+                        description: 'Care of children.', 
+                        chapters: generateChapters('Kaumarbhritya', 10) 
+                    },
+                    { 
+                        id: 'p3s8', 
+                        name: 'Charaka Samhita (U)', 
+                        sanskritName: 'Classical Texts III', 
+                        description: 'Final part of Charaka Samhita.', 
+                        chapters: generateChapters('Charaka Uttara', 8) 
+                    },
+                    { 
+                        id: 'p3s9', 
+                        name: 'Research Methodology', 
+                        sanskritName: 'Anusandhan', 
+                        description: 'Medical statistics and research.', 
+                        chapters: generateChapters('Research', 6) 
+                    },
+                ]
+            }
+        ];
+
+        // ====================== AI SERVICE (FIXED VERSION) ======================
+        class RealGeminiService {
+            constructor(apiKey) {
+                this.apiKey = apiKey;
+                console.log('AI Service initialized with API key:', apiKey ? 'Yes' : 'No');
+            }
+
+            async generateAyurvedaResponse(userPrompt) {
+                console.log('Generating response for:', userPrompt.substring(0, 50) + '...');
+                
+                // Check if we have a REAL API key (not a placeholder)
+                const isPlaceholderKey = this.apiKey === 'YOUR_GEMINI_API_KEY_HERE' || 
+                                        this.apiKey === '' || 
+                                        !this.apiKey || 
+                                        this.apiKey.includes('YOUR_');
+                
+                const hasValidApiKey = this.apiKey && 
+                                      !isPlaceholderKey && 
+                                      this.apiKey.startsWith('AIza') && 
+                                      this.apiKey.length > 30;
+
+                console.log('Has valid API key?:', hasValidApiKey);
+                console.log('Is placeholder key?:', isPlaceholderKey);
+
+                if (hasValidApiKey) {
+                    console.log('🔵 ATTEMPTING REAL GEMINI API CALL');
+                    try {
+                        const response = await fetch(
+                            `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${this.apiKey}`,
+                            {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                },
+                                body: JSON.stringify({
+                                    contents: [{
+                                        parts: [{
+                                            text: userPrompt
+                                        }]
+                                    }],
+                                    system_instruction: {
+                                        parts: [{
+                                            text: `You are 'AyurBot', a wise and knowledgeable Ayurvedic expert and clinical professor for BAMS students.
+                                            Your name is Ayurveez Assistant.
+                                            You have deep knowledge of Charaka Samhita, Sushruta Samhita, Ashtanga Hridaya, and modern clinical correlation.
+                                            
+                                            Guidelines:
+                                            1. Answer student queries regarding subjects, textbooks, slokas, and clinical treatments.
+                                            2. Use a polite, scholarly, yet accessible tone.
+                                            3. If asked about treatments, provide the Ayurvedic perspective but always include a disclaimer that this is for educational purposes.
+                                            4. Keep answers concise but informative (2-3 paragraphs maximum).
+                                            5. If the query is unrelated to Ayurveda or medicine, politely steer the conversation back to Ayurveda.
+                                            6. Always respond in English unless specifically asked for Sanskrit terms.
+                                            7. Include relevant Sanskrit terminology when appropriate.`
+                                        }]
+                                    },
+                                    generationConfig: {
+                                        temperature: 0.7,
+                                        maxOutputTokens: 1000,
+                                        topP: 0.8,
+                                        topK: 40
+                                    }
+                                })
+                            }
+                        );
+                        
+                        console.log('API Response status:', response.status);
+                        
+                        if (!response.ok) {
+                            const errorText = await response.text();
+                            console.error('❌ API Error:', response.status, errorText);
+                            console.log('🟡 Falling back to mock response');
+                            return this.getMockResponse(userPrompt);
+                        }
+                        
+                        const data = await response.json();
+                        console.log('API Response data:', data);
+                        
+                        if (data.candidates && 
+                            data.candidates[0] && 
+                            data.candidates[0].content && 
+                            data.candidates[0].content.parts && 
+                            data.candidates[0].content.parts[0]) {
+                            console.log('✅ REAL API RESPONSE SUCCESS');
+                            return data.candidates[0].content.parts[0].text;
+                        } else {
+                            console.warn('⚠️ Unexpected API response structure:', data);
+                            console.log('🟡 Falling back to mock response');
+                            return this.getMockResponse(userPrompt);
+                        }
+                        
+                    } catch (error) {
+                        console.error('❌ Gemini API Network Error:', error);
+                        console.log('🟡 Falling back to mock response');
+                        return this.getMockResponse(userPrompt);
+                    }
+                } else {
+                    console.log('🟡 USING MOCK RESPONSE (No valid API key)');
+                    console.log('API Key provided:', this.apiKey ? `"${this.apiKey.substring(0, 20)}..."` : 'None');
+                    console.log('To use real AI, replace YOUR_GEMINI_API_KEY_HERE with your actual Gemini API key');
+                    return this.getMockResponse(userPrompt);
+                }
+            }
+
+            getMockResponse(userPrompt) {
+                console.log('🔶 Generating mock response for:', userPrompt);
+                const lowerPrompt = userPrompt.toLowerCase();
+                
+                if (lowerPrompt.includes('dosha') || lowerPrompt.includes('vata') || lowerPrompt.includes('pitta') || lowerPrompt.includes('kapha')) {
+                    return "According to Ayurveda, there are three fundamental biological energies called doshas: Vata (composed of air and space), Pitta (composed of fire and water), and Kapha (composed of earth and water). Each individual has a unique combination of these doshas called Prakriti, which determines their physical, mental, and emotional characteristics. Balance of these doshas is essential for health, while imbalance leads to disease.\n\nFor educational purposes only. Consult a qualified Ayurvedic practitioner for personal assessment.";
+                }
+                else if (lowerPrompt.includes('triphala') || lowerPrompt.includes('digest') || lowerPrompt.includes('constipation')) {
+                    return "Triphala is a classic Ayurvedic formulation consisting of three fruits: Amalaki (Emblica officinalis), Bibhitaki (Terminalia bellirica), and Haritaki (Terminalia chebula). It is considered a tridoshic rasayana, meaning it balances all three doshas. Benefits include:\n1. Supports healthy digestion and elimination\n2. Acts as a gentle detoxifier\n3. Contains antioxidants\n4. Supports overall wellness\n\nDosage: Typically 1-2 teaspoons with warm water at bedtime.\n\nDisclaimer: This information is for educational purposes. Consult an Ayurvedic physician for personalized advice.";
+                }
+                else if (lowerPrompt.includes('charaka') || lowerPrompt.includes('samhita') || lowerPrompt.includes('text')) {
+                    return "Charaka Samhita is one of the foundational texts of Ayurveda, primarily focusing on internal medicine (Kayachikitsa). It was compiled by Acharya Charaka around 300 BCE-200 CE. Key features:\n\n1. Contains 8 Sthanas (sections) and 120 chapters\n2. Describes fundamental principles like Panchamahabhuta, Tridosha, Saptadhatu\n3. Details diagnosis through Nadi Pariksha, Mutra Pariksha, etc.\n4. Explains treatment modalities including Shodhana and Shamana\n5. Emphasizes the importance of diet (Ahara) and lifestyle (Vihara)\n\nIt remains essential reading for all BAMS students and Ayurvedic practitioners.";
+                }
+                else if (lowerPrompt.includes('panchakarma') || lowerPrompt.includes('detox') || lowerPrompt.includes('purification')) {
+                    return "Panchakarma refers to five therapeutic procedures for deep purification and detoxification:\n\n1. Vamana: Therapeutic emesis for Kapha disorders\n2. Virechana: Therapeutic purgation for Pitta disorders\n3. Basti: Medicated enema for Vata disorders\n4. Nasya: Nasal administration of medicines\n5. Raktamokshana: Bloodletting (rarely used today)\n\nEach procedure has specific Purvakarma (preparation), Pradhana Karma (main procedure), and Paschatkarma (post-care). Panchakarma should only be performed under the supervision of a qualified Ayurvedic physician after proper assessment.\n\nEducational note: These are specialized procedures requiring professional guidance.";
+                }
+                else if (lowerPrompt.includes('herb') || lowerPrompt.includes('turmeric') || lowerPrompt.includes('ashwagandha') || lowerPrompt.includes('tulsi')) {
+                    return "Common Ayurvedic herbs and their properties:\n\n1. Turmeric (Haridra):\n   - Rasa: Katu, Tikta\n   - Virya: Ushna\n   - Prabhava: Anti-inflammatory, antioxidant\n   - Uses: Wound healing, skin conditions, digestive support\n\n2. Ashwagandha (Withania somnifera):\n   - Rasa: Tikta, Katu, Madhura\n   - Virya: Ushna\n   - Prabhava: Adaptogen, rejuvenative\n   - Uses: Stress reduction, strength building, sleep support\n\n3. Tulsi (Ocimum sanctum):\n   - Rasa: Katu, Tikta\n   - Virya: Ushna\n   - Prabhava: Immunomodulator\n   - Uses: Respiratory health, fever, common cold\n\nNote: Herb-drug interactions are possible. Consult an Ayurvedic practitioner.";
+                }
+                else if (lowerPrompt.includes('hello') || lowerPrompt.includes('hi') || lowerPrompt.includes('namaste')) {
+                    return "Namaste! 🙏 I am Ayurveez Assistant, your Ayurvedic educational guide. I can help you with:\n\n• Understanding Ayurvedic concepts and principles\n• Information about BAMS curriculum subjects\n• Explanations of herbs, formulations, and treatments\n• Study guidance for Charaka, Sushruta, and other Samhitas\n• Clinical correlations and modern applications\n\nPlease ask your question about Ayurveda or BAMS studies.";
+                }
+                else if (lowerPrompt.includes('treatment') || lowerPrompt.includes('disease') || lowerPrompt.includes('cure')) {
+                    return "As an educational assistant, I can provide information about Ayurvedic approaches to health conditions, but please note:\n\n1. Ayurvedic treatment is personalized based on Prakriti, Vikriti, and other factors\n2. Proper diagnosis by a qualified Vaidya is essential\n3. Treatments may include dietary changes, herbal medicines, Panchakarma, etc.\n4. Always consult with a registered Ayurvedic practitioner for personal health concerns\n\nI can explain general Ayurvedic principles, but specific medical advice requires consultation with a healthcare professional.";
+                }
+                else {
+                    return "Namaste! I'm Ayurveez Assistant, your Ayurvedic education guide. I can help with:\n\n📚 BAMS Curriculum: Questions about Padartha Vigyan, Dravyaguna, Charaka Samhita, etc.\n🌿 Ayurvedic Principles: Doshas, Dhatus, Malas, Agni, Ojas\n💊 Herbs & Formulations: Common Ayurvedic medicines and their uses\n🏥 Clinical Concepts: Diagnostic methods and treatment approaches\n📖 Samhita Studies: Explanations of classical texts\n\nPlease ask a specific Ayurveda-related question, and I'll provide educational information.";
+                }
+            }
+        }
+
+        // ====================== ACCESS MODAL COMPONENT ======================
+        class AccessModal {
+            constructor(props) {
+                this.props = props;
+                this.state = {
+                    inputCode: '',
+                    error: '',
+                    success: false
+                };
+                this.render();
+            }
+
+            handleInputChange(value) {
+                this.state.inputCode = value.toUpperCase();
+                this.state.error = '';
+                this.render();
+            }
+
+            handleSubmit(e) {
+                e.preventDefault();
+                const { inputCode } = this.state;
+                const { onUnlock, onClose } = this.props;
+
+                if (!inputCode.trim()) {
+                    this.state.error = 'Please enter access code';
+                    this.render();
+                    return;
+                }
+
+                const isValid = onUnlock(inputCode);
+                if (isValid) {
+                    this.state.success = true;
+                    this.render();
+                    
+                    setTimeout(() => {
+                        onClose();
+                        this.state.success = false;
+                        this.state.inputCode = '';
+                        this.state.error = '';
+                    }, 1500);
+                } else {
+                    this.state.error = 'Invalid Access Code. Please check and try again.';
+                    this.render();
+                }
+            }
+
+            handleClose() {
+                this.props.onClose();
+            }
+
+            render() {
+                const { isOpen, onClose } = this.props;
+                const { inputCode, error, success } = this.state;
+
+                if (!isOpen) {
+                    if (this.container) {
+                        this.container.remove();
+                        this.container = null;
+                    }
+                    return;
+                }
+
+                const modalHTML = `
+                    <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm p-4">
+                        <div class="relative bg-white w-full max-w-lg rounded-xl shadow-2xl overflow-hidden border-2 border-ayur-primary">
+                            <button onclick="window.accessModalInstance.handleClose()" 
+                                    class="absolute top-3 right-3 text-ayur-primary hover:text-ayur-accent text-2xl">
+                                ✕
+                            </button>
+
+                            <div class="bg-ayur-secondary p-6 text-center">
+                                <h2 class="text-2xl font-serif font-bold text-white mb-1">Unlock Course Access</h2>
+                                <p class="text-emerald-100 text-sm">Join the legacy of Ayurveda</p>
+                            </div>
+
+                            <div class="p-6 space-y-6">
+                                <div class="space-y-3">
+                                    <h3 class="font-serif font-bold text-ayur-primary flex items-center gap-2">
+                                        <span class="bg-ayur-primary text-white w-6 h-6 rounded-full flex items-center justify-center text-sm">1</span>
+                                        Payment Details
+                                    </h3>
+                                    <div class="bg-orange-50 p-4 rounded-lg border border-orange-200">
+                                        <p class="text-sm text-gray-700 mb-2">Send your enrollment fee via UPI to:</p>
+                                        <div class="flex items-center justify-between bg-white p-3 rounded border border-orange-200 shadow-sm">
+                                            <span class="font-mono font-bold text-lg text-ayur-text">${PAYMENT_UPI_ID}</span>
+                                            <span class="text-xs text-ayur-accent font-semibold px-2 py-1 bg-orange-100 rounded">UPI</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="space-y-3">
+                                    <h3 class="font-serif font-bold text-ayur-primary flex items-center gap-2">
+                                        <span class="bg-ayur-primary text-white w-6 h-6 rounded-full flex items-center justify-center text-sm">2</span>
+                                        Verify & Get Code
+                                    </h3>
+                                    <p class="text-sm text-gray-600">
+                                        Send the payment screenshot to our WhatsApp number to receive your unique Access Code.
+                                    </p>
+                                    <a href="${WHATSAPP_LINK}" 
+                                       target="_blank" 
+                                       rel="noopener noreferrer"
+                                       class="flex items-center justify-center gap-2 w-full py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors font-medium">
+                                        <span>📱</span> WhatsApp: ${WHATSAPP_NUMBER}
+                                    </a>
+                                </div>
+
+                                <div class="space-y-3 pt-2 border-t border-gray-200">
+                                    <h3 class="font-serif font-bold text-ayur-primary flex items-center gap-2">
+                                        <span class="bg-ayur-primary text-white w-6 h-6 rounded-full flex items-center justify-center text-sm">3</span>
+                                        Enter Access Code
+                                    </h3>
+                                    <form onsubmit="event.preventDefault(); window.accessModalInstance.handleSubmit(event);">
+                                        <div class="flex gap-2">
+                                            <div class="relative flex-1">
+                                                <input
+                                                    type="text"
+                                                    value="${inputCode}"
+                                                    oninput="window.accessModalInstance.handleInputChange(this.value)"
+                                                    placeholder="Enter Code here..."
+                                                    class="w-full pl-4 pr-4 py-3 border-2 border-gray-300 rounded-lg focus:border-ayur-primary focus:ring-0 outline-none transition-colors font-mono uppercase text-lg"
+                                                    autocomplete="off"
+                                                />
+                                            </div>
+                                            <button type="submit"
+                                                    ${success ? 'disabled' : ''}
+                                                    class="px-6 py-3 rounded-lg font-bold text-white transition-all ${success ? 'bg-green-600' : 'bg-ayur-primary hover:bg-ayur-accent'}">
+                                                ${success ? '✓ Unlocked' : 'Unlock'}
+                                            </button>
+                                        </div>
+                                        ${error ? `<p class="text-red-600 text-sm mt-2">${error}</p>` : ''}
+                                        ${success ? `<p class="text-green-600 text-sm mt-2">Access granted! Redirecting...</p>` : ''}
+                                    </form>
+                                    <p class="text-xs text-gray-500 mt-2">
+                                        Demo Code: <span class="font-mono font-bold">${MASTER_ACCESS_CODE}</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                if (!this.container) {
+                    this.container = document.createElement('div');
+                    document.body.appendChild(this.container);
+                }
+                
+                this.container.innerHTML = modalHTML;
+            }
+        }
+
+        // ====================== CHATBOT COMPONENT ======================
+        class ChatBot {
+            constructor() {
+                this.state = {
+                    isOpen: false,
+                    messages: [
+                        { 
+                            id: 'init', 
+                            role: 'model', 
+                            text: 'Namaste! 🙏 I am Ayurveez Assistant, your Ayurvedic educational guide. I can help you with BAMS curriculum, Ayurvedic principles, herbs, treatments, and Samhita studies. How can I assist you today?' 
+                        }
+                    ],
+                    inputValue: '',
+                    isLoading: false
+                };
+                this.aiService = new RealGeminiService(GEMINI_API_KEY);
+                this.render();
+            }
+
+            toggleChat() {
+                this.state.isOpen = !this.state.isOpen;
+                this.render();
+                if (this.state.isOpen) {
+                    setTimeout(() => this.scrollToBottom(), 100);
+                }
+            }
+
+            handleInputChange(value) {
+                this.state.inputValue = value;
+                this.render();
+            }
+
+            async handleSendMessage() {
+                const inputValue = this.state.inputValue.trim();
+                if (!inputValue) return;
+
+                const userMsg = {
+                    id: Date.now().toString(),
+                    role: 'user',
+                    text: inputValue
+                };
+                this.state.messages.push(userMsg);
+                this.state.inputValue = '';
+                this.state.isLoading = true;
+                this.render();
+
+                this.scrollToBottom();
+
+                try {
+                    console.log('📤 Sending message to AI:', inputValue);
+                    const responseText = await this.aiService.generateAyurvedaResponse(inputValue);
+                    console.log('📥 Received AI response:', responseText.substring(0, 100) + '...');
+                    
+                    const botMsg = {
+                        id: (Date.now() + 1).toString(),
+                        role: 'model',
+                        text: responseText
+                    };
+                    
+                    this.state.messages.push(botMsg);
+                } catch (error) {
+                    console.error('❌ Chat error:', error);
+                    const errorMsg = {
+                        id: (Date.now() + 1).toString(),
+                        role: 'model',
+                        text: "I apologize, I'm having difficulty responding. Please try again or check your connection."
+                    };
+                    this.state.messages.push(errorMsg);
+                }
+                
+                this.state.isLoading = false;
+                this.render();
+                
+                setTimeout(() => this.scrollToBottom(), 100);
+            }
+
+            scrollToBottom() {
+                const messagesContainer = document.querySelector('.chat-messages');
+                if (messagesContainer) {
+                    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+                }
+            }
+
+            render() {
+                const { isOpen, messages, inputValue, isLoading } = this.state;
+
+                if (this.buttonContainer) {
+                    this.buttonContainer.remove();
+                }
+                if (this.chatContainer) {
+                    this.chatContainer.remove();
+                }
+
+                // Floating Button
+                this.buttonContainer = document.createElement('div');
+                this.buttonContainer.innerHTML = `
+                    <button onclick="window.chatBotInstance.toggleChat()"
+                            class="fixed bottom-6 right-6 z-40 p-4 rounded-full shadow-lg transition-all duration-300 flex items-center justify-center ${isOpen ? 'bg-red-800 rotate-90' : 'bg-ayur-secondary hover:bg-emerald-800 hover:scale-110'} text-white border-2 border-yellow-500">
+                        ${isOpen ? '✕' : '💬'}
+                    </button>
+                `;
+                document.body.appendChild(this.buttonContainer);
+
+                // Chat Interface
+                this.chatContainer = document.createElement('div');
+                this.chatContainer.innerHTML = `
+                    <div class="fixed bottom-24 right-6 w-96 max-w-[90vw] bg-white rounded-2xl shadow-2xl border-2 border-ayur-secondary z-40 transition-all duration-300 origin-bottom-right flex flex-col overflow-hidden ${isOpen ? 'scale-100 opacity-100' : 'scale-0 opacity-0 pointer-events-none'}"
+                         style="height: 500px; max-height: 80vh;">
+                        
+                        <div class="bg-ayur-secondary p-4 flex items-center gap-3 text-white">
+                            <div class="bg-white/20 p-2 rounded-full">
+                                <span class="text-yellow-400">🌿</span>
+                            </div>
+                            <div>
+                                <h3 class="font-serif font-bold">Ayurveez Assistant</h3>
+                                <p class="text-xs text-emerald-200">AI Powered Clinical Guide</p>
+                            </div>
+                        </div>
+
+                        <div class="chat-messages flex-1 overflow-y-auto p-4 space-y-4 bg-ayur-light/50">
+                            ${messages.map(msg => `
+                                <div class="flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}">
+                                    <div class="max-w-[80%] p-3 rounded-2xl text-sm leading-relaxed shadow-sm ${msg.role === 'user' ? 'bg-ayur-primary text-white rounded-br-none' : 'bg-white border border-stone-200 text-ayur-text rounded-bl-none'}">
+                                        ${msg.text.split('\n').map(line => `<p class="mb-1">${line}</p>`).join('')}
+                                    </div>
+                                </div>
+                            `).join('')}
+                            
+                            ${isLoading ? `
+                                <div class="flex justify-start">
+                                    <div class="bg-white border border-stone-200 p-3 rounded-2xl rounded-bl-none flex items-center gap-2">
+                                        <span class="text-yellow-600 animate-spin">⚡</span>
+                                        <span class="text-xs text-gray-500">Consulting the Samhitas...</span>
+                                    </div>
+                                </div>
+                            ` : ''}
+                        </div>
+
+                        <div class="p-3 bg-white border-t border-gray-100">
+                            <div class="flex items-center gap-2 bg-gray-50 p-2 rounded-full border border-gray-300 focus-within:border-ayur-secondary focus-within:ring-1 focus-within:ring-ayur-secondary/20 transition-all">
+                                <input
+                                    type="text"
+                                    value="${inputValue}"
+                                    oninput="window.chatBotInstance.handleInputChange(this.value)"
+                                    onkeydown="if(event.key === 'Enter') window.chatBotInstance.handleSendMessage()"
+                                    placeholder="Ask about treatments, herbs, BAMS subjects..."
+                                    class="flex-1 bg-transparent border-none outline-none text-sm px-2"
+                                    ${isLoading ? 'disabled' : ''}
+                                />
+                                <button onclick="window.chatBotInstance.handleSendMessage()"
+                                        ${isLoading || !inputValue.trim() ? 'disabled' : ''}
+                                        class="p-2 bg-ayur-primary text-white rounded-full hover:bg-ayur-accent ${isLoading || !inputValue.trim() ? 'opacity-50' : ''} transition-colors">
+                                    📤
+                                </button>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-2 text-center">
+                                Educational purposes only • Not medical advice
+                            </p>
+                            <p class="text-xs text-gray-400 mt-1 text-center">
+                                ${GEMINI_API_KEY === 'YOUR_GEMINI_API_KEY_HERE' ? '🔶 Using mock responses - Add real API key for AI' : '✅ Real AI enabled'}
+                            </p>
+                        </div>
+                    </div>
+                `;
+                document.body.appendChild(this.chatContainer);
+
+                if (isOpen) {
+                    setTimeout(() => this.scrollToBottom(), 100);
+                }
+            }
+        }
+
+        // ====================== MAIN APP ======================
+        class AyurveezApp {
+            constructor() {
+                this.state = {
+                    view: 'home',
+                    activeProff: null,
+                    activeSubject: null,
+                    isAccessModalOpen: false,
+                    isUnlocked: localStorage.getItem('ayurveez_unlocked') === 'true'
+                };
+                this.render();
+                this.init();
+            }
+
+            init() {
+                window.chatBotInstance = new ChatBot();
+                console.log('Ayurveez App initialized');
+                console.log('AI Status:', GEMINI_API_KEY === 'YOUR_GEMINI_API_KEY_HERE' ? 'MOCK MODE' : 'REAL AI MODE');
+            }
+
+            handleProffClick(proff) {
+                this.state.activeProff = proff;
+                this.state.view = 'proff';
+                this.render();
+            }
+
+            handleSubjectClick(subject) {
+                if (this.state.isUnlocked) {
+                    this.state.activeSubject = subject;
+                    this.state.view = 'subject';
+                } else {
+                    this.state.isAccessModalOpen = true;
+                }
+                this.render();
+            }
+
+            handleUnlock(code) {
+                if (code === MASTER_ACCESS_CODE) {
+                    this.state.isUnlocked = true;
+                    localStorage.setItem('ayurveez_unlocked', 'true');
+                    this.state.isAccessModalOpen = false;
+                    this.render();
+                    return true;
+                }
+                return false;
+            }
+
+            goBack() {
+                if (this.state.view === 'subject') {
+                    this.state.view = 'proff';
+                    this.state.activeSubject = null;
+                } else if (this.state.view === 'proff') {
+                    this.state.view = 'home';
+                    this.state.activeProff = null;
+                }
+                this.render();
+            }
+
+            goHome() {
+                this.state.view = 'home';
+                this.state.activeProff = null;
+                this.state.activeSubject = null;
+                this.render();
+            }
+
+            renderHeader() {
+                return `
+                    <header class="sticky top-0 z-30 bg-ayur-base/95 backdrop-blur-md border-b-4 border-ayur-primary shadow-sm">
+                        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                            <div class="flex justify-between items-center h-20">
+                                <div class="flex items-center gap-3 cursor-pointer" onclick="app.goHome()">
+                                    <div class="bg-ayur-primary p-2 rounded-lg">
+                                        <span class="text-yellow-500 text-2xl">🎓</span>
+                                    </div>
+                                    <div>
+                                        <h1 class="text-2xl font-serif font-bold text-ayur-text tracking-tight">Ayurveez</h1>
+                                        <p class="text-xs font-sans text-ayur-accent font-semibold tracking-widest uppercase">BAMS Made Easy</p>
+                                    </div>
+                                </div>
+                                <div class="hidden md:flex space-x-8">
+                                    <span class="text-ayur-secondary font-bold hover:text-ayur-primary cursor-pointer transition">Home</span>
+                                    <span class="text-ayur-text hover:text-ayur-primary cursor-pointer transition">Library</span>
+                                    <span class="text-ayur-text hover:text-ayur-primary cursor-pointer transition">About</span>
+                                </div>
+                                <button class="md:hidden text-ayur-text text-2xl">
+                                    ☰
+                                </button>
+                            </div>
+                        </div>
+                    </header>
+                `;
+            }
+
+            renderHomeView() {
+                return `
+                    <div class="space-y-12 animate-fade-in">
+                        <div class="text-center space-y-4 mb-12">
+                            <h2 class="text-4xl md:text-5xl font-serif font-bold text-ayur-primary">
+                                Master the Art of Ayurveda
+                            </h2>
+                            <p class="max-w-2xl mx-auto text-lg text-gray-600">
+                                Comprehensive video lectures and digital notes for all professional years of BAMS.
+                            </p>
+                        </div>
+
+                        <div class="grid md:grid-cols-3 gap-8">
+                            ${CURRICULUM.map(proff => `
+                                <div onclick="app.handleProffClick(${JSON.stringify(proff).replace(/"/g, '&quot;')})"
+                                     class="bg-white rounded-2xl shadow-xl overflow-hidden cursor-pointer transform hover:-translate-y-2 transition-all duration-300 group border border-stone-200">
+                                    <div class="h-32 bg-gradient-to-br ${proff.id === 1 ? 'from-orange-800 to-amber-700' : proff.id === 2 ? 'from-emerald-800 to-green-700' : 'from-stone-800 to-gray-700'} p-6 flex items-center justify-center relative overflow-hidden">
+                                        <div class="absolute inset-0 opacity-10" style="background-image: url('data:image/svg+xml,<svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\" xmlns=\"http://www.w3.org/2000/svg\"><path d=\"M0 0h20L0 20z\" fill=\"white\" fill-opacity=\".05\"/></svg>')"></div>
+                                        <span class="text-6xl font-serif text-white/20 absolute right-4 -bottom-4">${proff.id}</span>
+                                        <h3 class="text-2xl font-serif font-bold text-white relative z-10">${proff.title}</h3>
+                                    </div>
+                                    <div class="p-6">
+                                        <p class="text-gray-600 mb-4 h-12">${proff.description}</p>
+                                        <div class="flex justify-between items-center text-ayur-primary font-bold group-hover:text-ayur-accent">
+                                            <span>${proff.subjects.length} Subjects</span>
+                                            <span class="transform group-hover:translate-x-1 transition-transform">→</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+
+                        <div class="mt-20 grid md:grid-cols-3 gap-6 text-center">
+                            <div class="p-6 bg-orange-50 rounded-xl border border-orange-100">
+                                <div class="w-12 h-12 bg-orange-200 rounded-full flex items-center justify-center mx-auto mb-4 text-orange-800">
+                                    <span class="text-xl">🎥</span>
+                                </div>
+                                <h4 class="font-bold text-lg mb-2">HD Video Lectures</h4>
+                                <p class="text-sm text-gray-600">Deep dive into concepts with expert explanations.</p>
+                            </div>
+                            <div class="p-6 bg-green-50 rounded-xl border border-green-100">
+                                <div class="w-12 h-12 bg-green-200 rounded-full flex items-center justify-center mx-auto mb-4 text-green-800">
+                                    <span class="text-xl">📚</span>
+                                </div>
+                                <h4 class="font-bold text-lg mb-2">Samhita Notes</h4>
+                                <p class="text-sm text-gray-600">Organized chapter-wise notes for easy revision.</p>
+                            </div>
+                            <div class="p-6 bg-stone-100 rounded-xl border border-stone-200">
+                                <div class="w-12 h-12 bg-stone-300 rounded-full flex items-center justify-center mx-auto mb-4 text-stone-800">
+                                    <span class="text-xl">🎓</span>
+                                </div>
+                                <h4 class="font-bold text-lg mb-2">Exam Oriented</h4>
+                                <p class="text-sm text-gray-600">Curated content focusing on university exams.</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            renderProffView() {
+                const { activeProff, isUnlocked } = this.state;
+                if (!activeProff) return '';
+
+                return `
+                    <div class="space-y-8 animate-fade-in">
+                        <div class="flex items-end justify-between border-b-2 border-stone-200 pb-4">
+                            <div>
+                                <span class="text-sm font-bold text-ayur-accent uppercase tracking-wider">Professional Year ${activeProff.id}</span>
+                                <h2 class="text-3xl font-serif font-bold text-ayur-text mt-1">${activeProff.title} Subjects</h2>
+                            </div>
+                            <div class="text-right hidden md:block">
+                                <p class="text-sm text-gray-500">${activeProff.subjects.length} Courses Available</p>
+                            </div>
+                        </div>
+
+                        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                            ${activeProff.subjects.map(subject => `
+                                <div onclick="app.handleSubjectClick(${JSON.stringify(subject).replace(/"/g, '&quot;')})"
+                                     class="group relative bg-white rounded-xl shadow-md border border-stone-200 hover:shadow-xl transition-all duration-300 overflow-hidden cursor-pointer">
+                                    ${!isUnlocked ? `
+                                        <div class="absolute top-3 right-3 z-10 bg-stone-900/80 text-white text-xs px-2 py-1 rounded flex items-center gap-1 backdrop-blur-sm">
+                                            <span>🔒</span> Locked
+                                        </div>
+                                    ` : ''}
+                                    <div class="h-2 bg-ayur-primary w-full group-hover:bg-ayur-accent transition-colors"></div>
+                                    <div class="p-6">
+                                        <h3 class="text-xl font-bold text-gray-800 group-hover:text-ayur-primary transition-colors">${subject.name}</h3>
+                                        <p class="text-sm text-ayur-secondary font-serif italic mb-3">${subject.sanskritName}</p>
+                                        <p class="text-gray-600 text-sm line-clamp-2">${subject.description}</p>
+                                    </div>
+                                    <div class="bg-stone-50 px-6 py-3 flex justify-between items-center text-sm font-medium text-gray-500 border-t border-stone-100">
+                                        <span class="flex items-center gap-1"><span class="text-lg">📖</span> ${subject.chapters.length} Chapters</span>
+                                        ${isUnlocked ? `
+                                            <span class="text-green-600 flex items-center gap-1">Access <span class="transform group-hover:translate-x-1 transition-transform">→</span></span>
+                                        ` : `
+                                            <span class="text-ayur-accent font-semibold">Unlock Now</span>
+                                        `}
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            renderSubjectView() {
+                const { activeSubject } = this.state;
+                if (!activeSubject) return '';
+
+                return `
+                    <div class="animate-fade-in">
+                        <div class="bg-ayur-primary text-white rounded-2xl p-8 mb-8 relative overflow-hidden shadow-lg">
+                            <div class="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -translate-y-1/2 translate-x-1/2"></div>
+                            <div class="relative z-10">
+                                <h2 class="text-4xl font-serif font-bold mb-2">${activeSubject.name}</h2>
+                                <p class="text-orange-200 text-lg font-serif italic mb-6">${activeSubject.sanskritName}</p>
+                                <p class="max-w-2xl text-white/90">${activeSubject.description}</p>
+                            </div>
+                        </div>
+
+                        <div class="bg-white rounded-xl shadow-sm border border-stone-200 overflow-hidden">
+                            <div class="p-6 border-b border-stone-200">
+                                <h3 class="text-lg font-bold text-gray-800">Course Content</h3>
+                            </div>
+                            <div class="divide-y divide-stone-100">
+                                ${activeSubject.chapters.map((chapter, index) => `
+                                    <div class="p-4 sm:p-6 hover:bg-stone-50 transition-colors flex items-center gap-4 group cursor-pointer">
+                                        <div class="flex-shrink-0 w-10 h-10 rounded-full bg-ayur-light flex items-center justify-center text-ayur-secondary font-bold group-hover:bg-ayur-primary group-hover:text-white transition-colors">
+                                            ${index + 1}
+                                        </div>
+                                        <div class="flex-grow">
+                                            <h4 class="font-bold text-gray-800 group-hover:text-ayur-primary transition-colors">${chapter.title}</h4>
+                                            <div class="flex items-center gap-4 mt-1 text-xs text-gray-500">
+                                                <span class="flex items-center gap-1"><span class="text-base">🎥</span> ${chapter.duration}</span>
+                                                <span class="flex items-center gap-1"><span class="text-base">📄</span> Notes Available</span>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <button class="p-2 rounded-full border border-gray-200 text-gray-400 group-hover:border-ayur-primary group-hover:text-ayur-primary transition-all">
+                                                <span class="opacity-0 group-hover:opacity-100 text-lg">▶</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            renderFooter() {
+                return `
+                    <footer class="bg-stone-900 text-stone-400 py-12 mt-12">
+                        <div class="max-w-7xl mx-auto px-4 text-center">
+                            <div class="flex items-center justify-center gap-2 mb-4">
+                                <span class="text-ayur-primary text-2xl">🎓</span>
+                                <span class="text-xl font-serif font-bold text-stone-200">Ayurveez</span>
+                            </div>
+                            <p class="text-sm mb-6 max-w-md mx-auto">Empowering the next generation of Vaidyas with accessible, high-quality digital education based on ancient wisdom.</p>
+                            <div class="text-xs text-stone-600">
+                                &copy; ${new Date().getFullYear()} Ayurveez Education. All rights reserved.
+                            </div>
+                        </div>
+                    </footer>
+                `;
+            }
+
+            render() {
+                const { view, isAccessModalOpen } = this.state;
+
+                const appHTML = `
+                    <div class="min-h-screen flex flex-col bg-stone-50 overflow-x-hidden">
+                        ${this.renderHeader()}
+
+                        <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                            ${view !== 'home' ? `
+                                <button onclick="app.goBack()"
+                                        class="mb-6 flex items-center text-ayur-secondary font-bold hover:underline gap-1 group">
+                                    <span class="group-hover:-translate-x-1 transition-transform text-xl">←</span>
+                                    Back to ${view === 'subject' ? this.state.activeProff?.title : 'Dashboard'}
+                                </button>
+                            ` : ''}
+
+                            ${view === 'home' ? this.renderHomeView() : ''}
+                            ${view === 'proff' ? this.renderProffView() : ''}
+                            ${view === 'subject' ? this.renderSubjectView() : ''}
+                        </main>
+
+                        ${this.renderFooter()}
+                    </div>
+                `;
+
+                const root = document.getElementById('root');
+                root.innerHTML = appHTML;
+
+                if (isAccessModalOpen) {
+                    window.accessModalInstance = new AccessModal({
+                        isOpen: true,
+                        onClose: () => {
+                            this.state.isAccessModalOpen = false;
+                            this.render();
+                        },
+                        onUnlock: (code) => this.handleUnlock(code)
+                    });
+                }
+            }
+        }
+
+        // ====================== INITIALIZE APP ======================
+        let app;
+        document.addEventListener('DOMContentLoaded', () => {
+            app = new AyurveezApp();
+            window.app = app;
+        });
+    </script>
+</body>
+</html>
